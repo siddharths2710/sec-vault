@@ -1,4 +1,5 @@
 import os
+import base64
 import zipfile
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.ciphers import (
@@ -22,11 +23,29 @@ class Encryptor:
                 modes.GCM(self._iv),
                 default_backend()
             )
-    def encrypt(self, content):
+
+    def encrypt(self, plain_text):
         enc = self._cipher.encryptor()
-        plain_text = self._key + b"||" \
-                     + content + b"||" \
-                     + self._iv
         cipher_text = enc.update(plain_text) \
                       + enc.finalize()
-        return cipher_text
+        final_ctext = base64.b64encode(self._key)  + b'||' \
+                    + cipher_text + b'||' \
+                    + base64.b64encode(self._iv)
+        return final_ctext
+
+class Decryptor:
+    def __init__(self, input):
+        self._key, self._ctext, self._iv = input.split(b"||")
+        self._key = base64.b64decode(self._key)
+        self._iv = base64.b64decode(self._iv)
+        self._cipher = Cipher(
+                algorithms.AES(self._key),
+                modes.GCM(self._iv),
+                default_backend()
+            )
+
+    def decrypt(self):
+        dec = self._cipher.decryptor()
+        plain_text = dec.update(self._ctext) \ 
+                    + dec.finalize()
+        return plain_text
