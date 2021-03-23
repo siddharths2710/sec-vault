@@ -15,12 +15,12 @@ class PwdZipFile(zipfile.ZipFile):
                 compresslevel=9, allowZip64=True)
 
 class Encryptor:
-    def __init__(self):
+    def __init__(self, mode=modes.GCM):
         self._key = os.urandom(32)
         self._iv = os.urandom(64)
         self._cipher = Cipher(
                 algorithms.AES(self._key),
-                modes.GCM(self._iv),
+                mode(self._iv),
                 default_backend()
             )
 
@@ -34,13 +34,13 @@ class Encryptor:
         return final_ctext
 
 class Decryptor:
-    def __init__(self, input):
+    def __init__(self, input, mode=modes.GCM):
         self._key, self._ctext, self._iv = input.split(b"||")
         self._key = base64.b64decode(self._key)
         self._iv = base64.b64decode(self._iv)
         self._cipher = Cipher(
                 algorithms.AES(self._key),
-                modes.GCM(self._iv),
+                mode(self._iv),
                 default_backend()
             )
 
