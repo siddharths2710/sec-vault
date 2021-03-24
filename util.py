@@ -1,13 +1,16 @@
 import os
+import re
 import base64
 import zipfile
+import pickle
+import pandas as pd
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.ciphers import (
 Cipher, algorithms, modes
 )
 
 class PwdZipFile(zipfile.ZipFile):
-    def __init__(self, infile='', outfile='', mode='r'):
+    def __init__(self, infile='', outfile='', mode=' r'):
         self._file = infile if mode is 'r' else outfile
         super(PwdZipFile, self).__init__(
                 file = self._file, mode=mode, 
@@ -46,6 +49,24 @@ class Decryptor:
 
     def decrypt(self):
         dec = self._cipher.decryptor()
-        plain_text = dec.update(self._ctext) \ 
+        plain_text = dec.update(self._ctext) \
                     + dec.finalize()
         return plain_text
+
+class PwdFileHandler:
+    def __init__(self, file_path):
+        self._df = pd.read_csv(file_path, sep="\t", index_col="Name")
+        self._pattern_index = {}
+
+    def find_record(self, name_pattern):
+        pattern = re.compile(name_pattern)
+        for record in self._df.iterrows():
+            if pattern.search(record[0], 0, 5) is not None:
+                print(record)
+
+    def get_cred(self, name):
+        return self._df.loc[name]
+
+    def to_pickle(self):
+        return pickle.dumps(self._df)
+    
