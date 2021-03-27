@@ -67,6 +67,12 @@ class PwdFileHandler:
     def get_cred(self, name):
         return self._df.loc[name]
 
+    def to_steg():
+        
+
     def to_pickle(self):
         return pickle.dumps(self._df)
-    
+
+class StegFileHandler:
+    def __init__(self, file_path):
+        
