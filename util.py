@@ -55,6 +55,7 @@ class Decryptor:
 
 class PwdFileHandler:
     def __init__(self, file_path):
+        self._file_path = file_path
         self._df = pd.read_csv(file_path, sep="\t", index_col="Name")
         self._pattern_index = {}
 
@@ -67,9 +68,10 @@ class PwdFileHandler:
     def get_cred(self, name):
         return self._df.loc[name]
 
-    def to_steg():
+    def to_archive(file_path):
+        zpf = PwdZipFile(outfile=file_path)
+        zpf.write(self._file_path)
         
-
     def to_pickle(self):
         return pickle.dumps(self._df)
 
