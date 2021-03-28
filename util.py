@@ -1,6 +1,7 @@
 import os
 import re
 import base64
+import logging
 import zipfile
 import pickle
 import pandas as pd
@@ -8,14 +9,6 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.ciphers import (
 Cipher, algorithms, modes
 )
-
-class PwdZipFile(zipfile.ZipFile):
-    def __init__(self, infile='', outfile='', mode=' r'):
-        self._file = infile if mode is 'r' else outfile
-        super(PwdZipFile, self).__init__(
-                file = self._file, mode=mode, 
-                compression=zipfile.ZIP_DEFLATED, 
-                compresslevel=9, allowZip64=True)
 
 class Encryptor:
     def __init__(self, mode=modes.GCM):
@@ -31,16 +24,12 @@ class Encryptor:
         enc = self._cipher.encryptor()
         cipher_text = enc.update(plain_text) \
                       + enc.finalize()
-        final_ctext = base64.b64encode(self._key)  + b'||' \
-                    + cipher_text + b'||' \
-                    + base64.b64encode(self._iv)
-        return final_ctext
+        return cipher_text
 
 class Decryptor:
-    def __init__(self, input, mode=modes.GCM):
-        self._key, self._ctext, self._iv = input.split(b"||")
-        self._key = base64.b64decode(self._key)
-        self._iv = base64.b64decode(self._iv)
+    def __init__(self, input, mode=modes.GCM, key="", cipher_text="", iv=""):
+        self._key = base64.b64decode(key)
+        self._iv = base64.b64decode(iv)
         self._cipher = Cipher(
                 algorithms.AES(self._key),
                 mode(self._iv),
@@ -52,6 +41,29 @@ class Decryptor:
         plain_text = dec.update(self._ctext) \
                     + dec.finalize()
         return plain_text
+
+class PwdZipFile(zipfile.ZipFile):
+    def __init__(self, infile='', outfile='', mode=' r'):
+        self._file = infile if mode is 'r' else outfile
+        self._tmp_dir = ".tmp"
+        super(PwdZipFile, self).__init__(
+                file = self._file, mode=mode, 
+                compression=zipfile.ZIP_DEFLATED,
+                compresslevel=9, allowZip64=True)
+        
+    def _store_encrypted(self):
+        enc = Encryptor()
+        key = base64.b64encode(getattr(enc, "_key", ""))
+        iv = base64.b64encode(getattr(enc, "_iv", ""))
+        with open(self._file, 'r') as pwd_file:
+            ctext = enc.encrypt(pwd_file.read())
+            self.writestr("vault", ctext)
+            self.writestr("{}/key".format(self._tmp_dir), key.decode('utf-8'))
+            self.writestr("{}/iv".format(self._tmp_dir), iv.decode('utf-8'))
+            if os.path.exists(self._file):
+                os.unlink(self._file)
+    
+    def _retrieve_file(self):
 
 class PwdFileHandler:
     def __init__(self, file_path):
