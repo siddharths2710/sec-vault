@@ -29,6 +29,7 @@ class PwdZipFile(zipfile.ZipFile):
                 os.unlink(self._file)
     
     def _retrieve_file(self):
+        pass
 
 class PwdFileHandler:
     def __init__(self, file_path):
@@ -45,7 +46,7 @@ class PwdFileHandler:
     def get_cred(self, name):
         return self._df.loc[name]
 
-    def to_archive(file_path):
+    def to_archive(self, file_path):
         zpf = PwdZipFile(outfile=file_path)
         zpf.write(self._file_path)
         
@@ -54,4 +55,4 @@ class PwdFileHandler:
 
 class StegFileHandler:
     def __init__(self, file_path):
-        
+        pass
