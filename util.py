@@ -1,10 +1,10 @@
 import os
 import re
-import base64
+import csv
 import pickle
+import base64
 import logging
 import zipfile
-import pandas as pd
 from crypto_backend import Encryptor, Decryptor
 
 class PwdZipFile(zipfile.ZipFile):
@@ -34,24 +34,38 @@ class PwdZipFile(zipfile.ZipFile):
 class PwdFileHandler:
     def __init__(self, file_path):
         self._file_path = file_path
-        self._df = pd.read_csv(file_path, sep="\t", index_col="Name")
-        self._pattern_index = {}
+        self._query_index = {}
+        self._cache = []
 
-    def find_record(self, name_pattern):
+    def __build_cache(self):
+        with open(self._file_path, 'r') as pwd_file:
+            pwd_reader = csv.reader(pwd_file)
+            self._cache = list(pwd_reader)
+
+
+    def _find_record(self, name_pattern):
+        if name_pattern in self._query_index:
+            return self._query_index[name_pattern]
         pattern = re.compile(name_pattern)
-        for record in self._df.iterrows():
-            if pattern.search(record[0], 0, 5) is not None:
-                print(record)
-
-    def get_cred(self, name):
-        return self._df.loc[name]
+        locations = []
+        for idx, record in enumerate(self._cache):
+            if pattern.search(record[0]) is not None:
+                locations.append(idx)
+        self._query_index = locations
+        return locations
+    
+    def get_entries(self, search_term):
+        indexes = self._find_record(search_term)
+        print("service\tlogin_id\tcredential")
+        for idx in indexes:
+            print("{}\t{}\t{}".format(*self._cache[idx]))
 
     def to_archive(self, file_path):
         zpf = PwdZipFile(outfile=file_path)
         zpf.write(self._file_path)
         
     def to_pickle(self):
-        return pickle.dumps(self._df)
+        return pickle.dumps(self._cache)
 
 class StegFileHandler:
     def __init__(self, file_path):

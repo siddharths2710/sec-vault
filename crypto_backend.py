@@ -1,3 +1,5 @@
+import os
+import base64
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.ciphers import (
 Cipher, algorithms, modes
@@ -23,6 +25,7 @@ class Decryptor:
     def __init__(self, input, mode=modes.GCM, key="", cipher_text="", iv=""):
         self._key = base64.b64decode(key)
         self._iv = base64.b64decode(iv)
+        self._ctext = cipher_text
         self._cipher = Cipher(
                 algorithms.AES(self._key),
                 mode(self._iv),
