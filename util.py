@@ -2,10 +2,10 @@ import os
 import re
 import csv
 import copy
-import pickle
 import base64
 import logging
 import zipfile
+import tempfile
 from crypto_backend import Encryptor, Decryptor                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
 
 class PwdZipFile(zipfile.ZipFile):
@@ -29,7 +29,11 @@ class PwdZipFile(zipfile.ZipFile):
             os.unlink(self._file)
     
     def _retrieve_file(self):
-        pass
+        key_f = self.open("{}/key".format(self._tmp_dir))
+        iv_f = self.open("{}/iv".format(self._tmp_dir))
+        key, iv = key_f.read(), iv_f.read()
+        key_f.close(); iv_f.close()
+
 
 class PwdFileHandler:
     def __init__(self, file_path):
@@ -78,8 +82,8 @@ class PwdFileHandler:
                 _oldentry = self._cache[idx][:]
                 self._cache[idx] = [svc_name, login_id, credential]
         
-    def to_pickle(self):
-        return pickle.dumps(self._cache)
+    def save_file(self):
+        return 
 
 class StegFileHandler:
     def __init__(self, file_path):
