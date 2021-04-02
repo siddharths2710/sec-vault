@@ -1,3 +1,5 @@
+import cipher
+
 import os
 import base64
 import logging
@@ -6,7 +8,7 @@ from cryptography.hazmat.primitives.ciphers import (
 Cipher, algorithms, modes
 )
 
-class Encryptor:
+class Encryptor(cipher.Encryptor):
     def __init__(self, mode=modes.GCM):
         self.__key = os.urandom(32)
         self.__iv = os.urandom(64)
@@ -17,12 +19,12 @@ class Encryptor:
             )
 
     def encrypt(self, plain_text):
-        enc = self._ciphe   r.encryptor()
+        enc = self._cipher.encryptor()
         cipher_text = enc.update(plain_text) \
                       + enc.finalize()
         return cipher_text
 
-class Decryptor:
+class Decryptor(cipher.Decryptor):
     def __init__(self, input, mode=modes.GCM, key="", cipher_text="", iv=""):
         self.__key = base64.b64decode(key)
         self.__iv = base64.b64decode(iv)
