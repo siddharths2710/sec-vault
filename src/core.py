@@ -1,3 +1,7 @@
+import re
+import csv
+import tempfile
+
 class PwdHandler:
     def __init__(self):
         self._query_index = {}
@@ -58,3 +62,4 @@ class PwdFileHandler(PwdHandler):
             writer.writeheader()
             for entry in self._cache:
                 writer.writerow(entry)
+        os.rename(tmp_file, self._file_path)
