@@ -6,8 +6,12 @@ import zipfile
 import tempfile
 
 class PwdZipFile(zipfile.ZipFile):
-    def __init__(self, infile='', outfile='', mode='r', tmp_dir):
+    def __init__(
+                self, infile='', outfile='', mode='r', 
+                compresslevel=9, allowZip64=True,
+                tmp_dir=None, **cipher_args={}):
         self._mode = mode
+        self._cparams = cipher_args
         self._tmp_dir = tmp_dir or ".tmp"
         self._file = infile if mode is 'r' else outfile
         self._valid_attr = lambda attr: attr[:2] == "__" \
@@ -15,13 +19,14 @@ class PwdZipFile(zipfile.ZipFile):
         super(PwdZipFile, self).__init__(
                 file = self._file, mode=mode, 
                 compression=zipfile.ZIP_DEFLATED,
-                compresslevel=9, allowZip64=True)
+                compresslevel, allowZip64)
         
     def _store_encrypted(self, plain_text):
         if self._mode not in {'w', 'a'}:
             logging.error('wrong mode set for zipfile')
             return False
-        enc1, enc2 = Encryptor(), Encryptor()
+        enc1, enc2 = Encryptor(self._cparams), 
+                     Encryptor(self._cparams)
         seeds1 = filter(self._valid_attr, dir(enc1))
         seeds2 = filter(self._valid_attr, dir(enc2))
         ctext = enc1.encrypt(plain_text)
