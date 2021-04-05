@@ -1,4 +1,5 @@
 import cipher
+import cipher_utils
 
 import os
 import base64
@@ -17,6 +18,10 @@ class Encryptor(cipher.Encryptor):
                 mode(self.__iv),
                 default_backend()
             )
+
+    @staticmethod
+    def get_supported_ciphers():
+        return cipher_utils.sanitize_attr(modes)
 
     def encrypt(self, plain_text):
         enc = self._cipher.encryptor()

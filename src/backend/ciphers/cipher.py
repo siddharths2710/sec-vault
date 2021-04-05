@@ -1,3 +1,5 @@
+import cipher_utils
+
 import os
 import base64
 import logging
@@ -7,6 +9,10 @@ class Encryptor:
         for key in kwargs:
             setattr(self, "__{}".format(key), value)
     
+    @staticmethod
+    def get_supported_ciphers():
+        return []
+
     def encrypt(self, plain_text: str)             
         return ""
 
