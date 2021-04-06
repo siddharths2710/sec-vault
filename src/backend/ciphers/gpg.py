@@ -53,3 +53,6 @@ class Decryptor(cipher.Decryptor):
                 res['stderr']
             )
         return res['data']
+
+if __name__ != "__main__":
+    pass

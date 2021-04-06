@@ -11,15 +11,6 @@ from cryptography.fernet import Fernet
 import cryptography.hazmat.backends.interfaces
 import cryptography.hazmat.backends.openssl.backend
 
-def get_cipher_package():
-    if 'Backend' in dir(cryptography.hazmat.backends.interfaces):
-        return cryptography.hazmat.backends.interfaces.Backend
-    else:
-        return cryptography.hazmat.backends.openssl.backend
-
-def get_supported_ciphers():
-    return cipher_utils.sanitize_attr(Encryptor.cipher_package)
-
 class Encryptor(cipher.Encryptor, backend=None):
     def __init__(self):
         self.__key = Fernet.generate_key()
@@ -34,3 +25,9 @@ class Decryptor(cipher.Decryptor):
 
     def decrypt(self, token):
         return self._fernet.decrypt(token)
+
+if __name__ != "__main__":
+    cipher_package = cryptography.hazmat.backends.interfaces.Backend \
+    if 'Backend' in dir(cryptography.hazmat.backends.interfaces) else \
+                    cryptography.hazmat.backends.openssl.backend
+    cipher_suite = cipher_utils.sanitize_attr(cipher_package)

@@ -29,3 +29,6 @@ class Decryptor:
 
     def decrypt(self, cipher_text: str):
         return ""
+
+if __name__ != "__main__":
+    pass

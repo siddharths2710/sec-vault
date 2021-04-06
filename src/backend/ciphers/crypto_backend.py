@@ -12,9 +12,6 @@ Cipher, algorithms, modes
 def get_cipher_package():
     return modes
 
-def get_supported_ciphers():
-    return cipher_utils.sanitize_attr(modes)
-
 class Encryptor(cipher.Encryptor):
     def __init__(self, mode=modes.GCM):
         self.__key = os.urandom(32)
@@ -48,3 +45,7 @@ class Decryptor(cipher.Decryptor):
         plain_text = dec.update(self._ctext) \
                     + dec.finalize()
         return plain_text
+
+if __name__ != "__main__":
+    cipher_package = modes
+    cipher_suite = cipher_utils.sanitize_attr(modes)
