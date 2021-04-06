@@ -9,6 +9,12 @@ from cryptography.hazmat.primitives.ciphers import (
 Cipher, algorithms, modes
 )
 
+def get_cipher_package():
+    return modes
+
+def get_supported_ciphers():
+    return cipher_utils.sanitize_attr(modes)
+
 class Encryptor(cipher.Encryptor):
     def __init__(self, mode=modes.GCM):
         self.__key = os.urandom(32)
@@ -19,9 +25,6 @@ class Encryptor(cipher.Encryptor):
                 default_backend()
             )
 
-    @staticmethod
-    def get_supported_ciphers():
-        return cipher_utils.sanitize_attr(modes)
 
     def encrypt(self, plain_text):
         enc = self._cipher.encryptor()
