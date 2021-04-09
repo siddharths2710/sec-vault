@@ -1,4 +1,4 @@
-import cipher_utils
+from . import cipher_utils
 
 import os
 import base64
@@ -13,7 +13,7 @@ class Encryptor:
     def get_supported_ciphers():
         return []
 
-    def encrypt(self, plain_text: str)             
+    def encrypt(self, plain_text: str):
         return ""
 
 class Decryptor:

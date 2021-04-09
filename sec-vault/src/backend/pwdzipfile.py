@@ -9,7 +9,7 @@ class PwdZipFile(zipfile.ZipFile):
     def __init__(
                 self, infile='', outfile='', mode='r', 
                 compresslevel=9, allowZip64=True,
-                tmp_dir=None, **cipher_args={}):
+                tmp_dir=None, **cipher_args):
         self._mode = mode
         self._cparams = cipher_args
         self._tmp_dir = tmp_dir or ".tmp"
@@ -17,15 +17,16 @@ class PwdZipFile(zipfile.ZipFile):
         self._valid_attr = lambda attr: attr[:2] == "__" \
                             and attr[-2:] != "__"
         super(PwdZipFile, self).__init__(
-                file = self._file, mode=mode, 
+                file=self._file, mode=mode, 
                 compression=zipfile.ZIP_DEFLATED,
-                compresslevel, allowZip64)
+                compresslevel=compresslevel, allowZip64=allowZip64
+                )
         
     def _store_encrypted(self, plain_text):
         if self._mode not in {'w', 'a'}:
             logging.error('wrong mode set for zipfile')
             return False
-        enc1, enc2 = Encryptor(self._cparams), 
+        enc1, enc2 = Encryptor(self._cparams), \
                      Encryptor(self._cparams)
         seeds1 = filter(self._valid_attr, dir(enc1))
         seeds2 = filter(self._valid_attr, dir(enc2))
@@ -49,8 +50,10 @@ class PwdZipFile(zipfile.ZipFile):
                         )
             with os.fdopen(fd, "w") as tmp_file:
                 tmp_file.write("{}:{}".format(seed, val))
-            else:
+            if not os.path.isfile(final_path):
                 os.rename(tmp_file, final_path)
+            else:
+                final_path = tmp_path
             logging.info("seed: {} flushed to: {}".format(
                 seed, final_path
             ))
@@ -79,7 +82,7 @@ class PwdZipFile(zipfile.ZipFile):
                     f.close()
         else:
             if not os.path.isdir(self._tmp_dir):
-                break
+                raise logging.error("seed directory missing: {}".format(self._tmp_dir))
             for seed_path in glob.glob(self._tmp_dir):
                 seed_file = open(seed_path, 'r')
                 try:

@@ -1,0 +1,8 @@
+cipher_suite: crypto_backend
+args:
+        algorithm: AES
+        mode: GCM
+argparams:
+        mode:
+                tag: 98fc41b5-4305-459e-8d3a-c378fe910ca0
+                min_tag_length: 36

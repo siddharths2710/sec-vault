@@ -1,5 +1,5 @@
-import cipher
 import gnupg
+from . import cipher
 
 class Encryptor(cipher.Encryptor):
     def __init__(

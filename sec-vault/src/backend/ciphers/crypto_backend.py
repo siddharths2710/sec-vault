@@ -1,6 +1,3 @@
-import cipher
-import cipher_utils
-
 import os
 import base64
 import logging
@@ -9,17 +6,26 @@ from cryptography.hazmat.primitives.ciphers import (
 Cipher, algorithms, modes
 )
 
+from . import cipher, cipher_utils
+
 def get_cipher_package():
     return modes
 
 class Encryptor(cipher.Encryptor):
-    def __init__(self, algo=algorithms.AES, mode=modes.GCM, encoding='utf-8', 
+    def __init__(self, algo=algorithms.AES, mode=modes.GCM, encoding='utf-8',
                                     key=None, iv=None, key_size=32, iv_size=16, **kwargs):
         self.__key = key or os.urandom(key_size)
         self.__iv = iv or os.urandom(iv_size)
+        algo_params = {}
+        mode_params = {}
+        if 'params' in kwargs:
+            if 'algorithm' in kwargs['params']:
+                algo_params.update(kwargs['params']['algorithm'])
+            if 'mode' in kwargs['params']:
+                mode_params.update(kwargs['params']['mode'])
         self._cipher = Cipher(
-                algo(self.__key, **kwargs.get("algo_params", None)),
-                mode(self.__iv, **kwargs.get("mode_params", None)),
+                algo(self.__key, algo_params),
+                mode(self.__iv, mode_params),
                 default_backend()
             )
 
@@ -38,9 +44,16 @@ class Decryptor(cipher.Decryptor):
         self.__key = base64.b64decode(key)
         self.__iv = base64.b64decode(iv)
         self._ctext = cipher_text
+        algo_params = {}
+        mode_params = {}
+        if 'params' in kwargs:
+            if 'algorithm' in kwargs['params']:
+                algo_params.update(kwargs['params']['algorithm'])
+            if 'mode' in kwargs['params']:
+                mode_params.update(kwargs['params']['mode'])
         self._cipher = Cipher(
-                algo(self.__key, **kwargs.get('algo_params', None)),
-                mode(self.__iv, **kwargs.get('mode_params', None)),
+                algo(self.__key, **algo_params),
+                mode(self.__iv, **mode_params),
                 default_backend()
             )
 
@@ -51,5 +64,8 @@ class Decryptor(cipher.Decryptor):
         return plain_text.decode(encoding)
 
 if __name__ != "__main__":
-    cipher_package = modes
-    cipher_suite = cipher_utils.sanitize_attr(modes)
+    CIPHER_PKG = {'algorithms': algorithms, 'modes': modes}
+    CIPHER_SUITE = {
+                        k:cipher_utils.expand_attrs(v) \
+                        for k,v in CIPHER_PKG.items()
+                    }
