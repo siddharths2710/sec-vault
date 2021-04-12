@@ -55,9 +55,15 @@ class CipherConfig:
                 return False
         return True
 
-    def load():
-        with open(cfg_path) as cfg_file:
+    def load(self):
+        with open(self._path) as cfg_file:
             self._cfg = yaml.load(cfg_file, Loader=yaml.FullLoader)
-        if not self._is_valid_suite(self._cfg['cipher_suite']):
+        if 'cipher_suite' not in self._cfg:
+            self._cfg['cipher_suite'] = 'crypto_backend'
+        elif not self._is_valid_suite(self._cfg['cipher_suite']):
             raise Exception("unsupported cipher suite: {}".format(
                                         self._cfg['cipher_suite']))
+        elif not self._is_valid_args():
+            raise Exception(
+                "Invalid arguments provided for cipher suite {}".format(
+                    self._cfg['cipher_suite']))
