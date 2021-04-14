@@ -9,13 +9,17 @@ class CLIParser(argparse.ArgumentParser):
         self._add_args()
         self._add_cipher_args()
 
-    def _add_cipher_args(self):
+    @property
+    def cipher_suites(self):
         cipher_modules = pkgutil.iter_modules(ciphers.__path__)
         cipher_names = map(lambda module: module.name, cipher_modules)
-        cipher_suites = filter(lambda suite: suite not in 'cipher', 'cipher_utils', cipher_names)
+        return filter(lambda suite: suite not in 'cipher', 'cipher_utils', cipher_names)
+
+    def _add_cipher_args(self):
+        cipher_suites = self.cipher_suites
         for suite_name in cipher_suites:
             cipher = __import__("ciphers.{}".format(suite_name), fromlist=[ciphers])
-            cipher_parser = self._suite_parsers.add_parser("--{}".format(suite_name),
+            cipher_parser = self._suite_parsers.add_parser("--{}_args".format(suite_name),
                                                             type=bool, dest=suite_name)
             try:
                 for suite_arg in cipher.CIPHER_SUITE:
@@ -37,6 +41,6 @@ class CLIParser(argparse.ArgumentParser):
         self.add_argument("-decr", "--decrypt", action="store_false", type=bool, help="Perform Vault decryption operation", dest="decrypt", required=False)
         self.add_argument("-cfg", "--config-file", type=str, 
                 help="Path to YAML-based config file", dest="cfg_path", required=False)
-        #self.add_argument("-suite","--cipher-suite", action="store", type=str, \
-        #                    help="Specify the cipher backend, one of" \
-        #                    ",".join(self._get_cipher_suites()))
+        self.add_argument("-suite","--cipher-suite", action="store", type=str, \
+                        dest="suite", help="Specify the cipher backend, one of" \
+                            ",".join(self.cipher_suites))

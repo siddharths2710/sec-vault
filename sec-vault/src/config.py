@@ -67,3 +67,4 @@ class CipherConfig:
             raise Exception(
                 "Invalid arguments provided for cipher suite {}".format(
                     self._cfg['cipher_suite']))
+        return self._cfg
