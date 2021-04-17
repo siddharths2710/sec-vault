@@ -1,3 +1,4 @@
+#! /usr/bin/env python3
 
 def _sanitize_attr(generic_attrs):
     return filter(lambda method: method[0] != "_",

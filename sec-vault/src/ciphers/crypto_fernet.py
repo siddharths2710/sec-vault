@@ -9,7 +9,7 @@ import cryptography.hazmat.backends.openssl.backend
 
 from . import cipher, cipher_utils
 
-class Encryptor(cipher.Encryptor, backend=None, **kwargs):
+class Encryptor(cipher.Encryptor, backend=None, kwargs):
     def __init__(self):
         self.__key = Fernet.generate_key()
         fernet_params = {}
