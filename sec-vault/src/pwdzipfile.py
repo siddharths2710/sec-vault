@@ -11,9 +11,8 @@ class PwdZipFile(zipfile.ZipFile):
                 compresslevel=9, allowZip64=True):
         self._mode = mode
         self._cparams = cipher_args
-        self._file = infile if mode is 'r' else outfile
-                            and attr[-2:] != "__"
+        self._file = infile if mode == 'r' else outfile
         super(PwdZipFile, self).__init__(
                 file=self._file, mode=mode, 
                 compression=zipfile.ZIP_DEFLATED,
-                compresslevel=compresslevel, allowZip64=allowZip64
+                compresslevel=compresslevel, allowZip64=allowZip64)

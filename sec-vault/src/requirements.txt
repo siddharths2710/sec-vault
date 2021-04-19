@@ -1,4 +1,4 @@
 argparse
+pyyaml
 gnupg~=2.3.1
 cryptography~=3.4.7
-pyyaml~=5.3.0

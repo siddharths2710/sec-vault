@@ -1,0 +1,5 @@
+arg_params:
+        recipients:
+                - john1@yahoo.com
+                - john2@gmail.com
+        encoding: utf-8
