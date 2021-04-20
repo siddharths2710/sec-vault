@@ -1,8 +1,14 @@
 import os
-import pkgutil
-import tempfile
-
 import ciphers
+import tempfile
+import cipherfactory
+
+def is_valid_suite(self, suite_name):
+        try:
+            __import__("ciphers.{}".format(suite_name), fromlist=[ciphers])
+            return True
+        except ImportError:
+            return False
 
 def valid_encr_attr(attr):
     return attr[:12] == '_Encryptor__'
@@ -20,13 +26,3 @@ def safe_write(directory, name, content):
         else:
             final_path = tmp_path
         return final_path
-
-class CipherMeta(type):
-    def __init__(cls, *args, **kwargs):
-        pass
-
-    @property
-    def cipher_suites(self):
-        cipher_modules = pkgutil.iter_modules(ciphers.__path__)
-        cipher_names = map(lambda module: module.name, cipher_modules)
-        return filter(lambda suite: suite[:6] != 'cipher', cipher_names)

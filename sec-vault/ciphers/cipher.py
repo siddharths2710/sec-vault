@@ -9,17 +9,18 @@ class Encryptor:
     Essential parameters such as generated keys and cipher modes 
     are dunder-prefixed for reuse while decrypting the message.
     """
-    def __init__(self, **kwargs: dict):
+    def __init__(self, cipher_params={}, arg_params={}, **kwargs: dict):
         """Initializer for primitives and underlying cipher objects
 
         :param kwargs: Consolidation of parameters consumed by base cipher library
         :type dict
         """
-        for key in kwargs:
+        for key in dict(cipher_params.items() + arg_params.items() + kwargs.items()):
             setattr(self, "__{}".format(key), value)
     
     def encrypt(self, plain_text: str):
         """Template method for encryption of a single message
+        
         :param plain_text: input message for encryption
         :type str
         :returns: encrypted output for secure storage
@@ -32,12 +33,18 @@ class Decryptor:
     Essential parameters such as generated keys and cipher modes 
     are dunder-prefixed for reuse while decrypting the message.
     """
-    def __init__(self, **kwargs: dict):
-        for key in kwargs:
+    def __init__(self, cipher_params={}, arg_params={}, **kwargs: dict):
+        """Initializer for primitives and underlying cipher objects
+
+        :param kwargs: Consolidation of parameters consumed by base cipher library
+        :type dict
+        """
+        for key in dict(cipher_params.items() + arg_params.items() + kwargs.items()):
             setattr(self, "__{}".format(key), value)
 
     def decrypt(self, cipher_text: str):
         """Template method for decryption of a cipher text
+        
         :param cipher_text: input message for decryption
         :type str
         :returns: decryption output access/modification

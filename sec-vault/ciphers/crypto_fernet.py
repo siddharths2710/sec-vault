@@ -15,7 +15,16 @@ if 'Backend' in dir(cryptography.hazmat.backends.interfaces) else \
                 cryptography.hazmat.backends.openssl.backend
 
 class Encryptor(cipher.Encryptor):
-    def __init__(self, *args, **kwargs):
+    """Encryptor class for symmetric encryption through Fernet module.
+    Essential parameters such as generated keys and cipher modes 
+    are dunder-prefixed for reuse while decrypting the message.
+    """
+    def __init__(self, **kwargs):
+        """Initializer for primitives and underlying cipher objects
+
+        :param kwargs: Consolidation of parameters consumed by base cipher library
+        :type dict
+        """
         backend = None
         cipher_params = kwargs.get("cipher_params", {})
         backend_val = cipher_params.pop("backend", None)
@@ -31,10 +40,26 @@ class Encryptor(cipher.Encryptor):
         self._fernet = Fernet(self.__key, backend, **kwargs.get('cipher_params',{}))
 
     def encrypt(self, plain_text: str):
+        """Template method for encryption of a single message
+        
+        :param plain_text: input message for encryption
+        :type str
+        :returns: encrypted output for secure storage
+        :rtype str
+        """
         return self._fernet.encrypt(plain_text.encode(self.__encoding))
 
 class Decryptor(cipher.Decryptor):
+    """Decryptor class for symmetric decryption through Fernet module.
+    Essential parameters such as generated keys and cipher modes 
+    are dunder-prefixed for reuse while decrypting the message.
+    """
     def __init__(self, **kwargs):
+        """Initializer for primitives and underlying cipher objects
+
+        :param kwargs: Consolidation of parameters consumed by base cipher library
+        :type dict
+        """
         backend = None
         cipher_params = kwargs.get("cipher_params", {})
         backend_val = cipher_params.pop("backend", None)
@@ -52,6 +77,13 @@ class Decryptor(cipher.Decryptor):
         self._fernet = Fernet(self.__key, backend, **cipher_params)
 
     def decrypt(self, cipher_text):
+        """Template method for decryption of a cipher text
+        
+        :param cipher_text: input message for decryption
+        :type str
+        :returns: decryption output access/modification
+        :rtype str
+        """
         return self._fernet.decrypt(cipher_text).decode(self.__encoding)
 
 if __name__ != "__main__":

@@ -21,10 +21,11 @@ class CLIParser(argparse.ArgumentParser):
         self.add_argument("--add-entry", type=str, help="Add a new record for secure storage into the vault")
         self.add_argument("--del-entry", type=str, help="Delete a record in the vault")
         self.add_argument("--modify-entry", type=str, help="Modify a record in the vault")
-        self.add_argument("--encrypt", action="store_true", help="Perform Vault encryption operation", dest="encrypt", required=False)
-        self.add_argument("--decrypt", action="store_true", help="Perform Vault decryption operation", dest="decrypt", required=False)
+        self.add_argument("--search-vault", type=str, help="Query vault records for a search term")
         self.add_argument("--cipher-suite", action="store", type=str, \
-                        dest="suite", help="Specify the cipher backend, one of {}".format(
+                        dest="suite", required=True, help="Specify the cipher backend, one of {}".format(
                                     ", ".join(cipherfactory.CipherFactory.cipher_suites)))
-        self.add_argument("--cipher-config-file", type=str, 
+        self.add_argument("--vault-path", type=str, 
+                help="Path to secure vault file", dest="vault_path", required=True)
+        self.add_argument("--cipher-config-path", type=str, 
                 help="Path to YAML-based parameter file", dest="cfg_path", required=False)

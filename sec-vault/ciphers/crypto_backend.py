@@ -12,9 +12,16 @@ Cipher, algorithms, modes
 from . import cipher, cipher_utils
 
 class Encryptor(cipher.Encryptor):
-    def __init__(self, **kwargs):
-        cipher_params = kwargs.get("cipher_params", {})
-        arg_params = kwargs.get("arg_params", {})
+    """Encryptor class for symmetric encryption through Fernet module.
+    Essential parameters such as generated keys and cipher modes 
+    are dunder-prefixed for reuse while decrypting the message.
+    """
+    def __init__(self, cipher_params={}, arg_params={}, **kwargs):
+        """Initializer for primitives and underlying cipher objects
+
+        :param kwargs: Consolidation of parameters consumed by base cipher library
+        :type dict
+        """
         self.__key = os.urandom(arg_params.get("key_size", 32))
         self.__iv = os.urandom(arg_params.get("iv_size", 16))
         self.__encoding = arg_params.get("encoding", "utf-8")
@@ -36,6 +43,13 @@ class Encryptor(cipher.Encryptor):
             )
 
     def encrypt(self, plain_text):
+        """Template method for encryption of a single message
+        
+        :param plain_text: input message for encryption
+        :type str
+        :returns: encrypted output for secure storage
+        :rtype str
+        """
         l = len(plain_text)
         self.__pad_len = (1<<(int(math.log2(l)) + 2)) - l
         ptext_padded =  plain_text + \
@@ -46,10 +60,16 @@ class Encryptor(cipher.Encryptor):
         return cipher_text
 
 class Decryptor(cipher.Decryptor):
-    def __init__(self, **kwargs):
-        cipher_params = kwargs.get("cipher_params", {})
-        arg_params = kwargs.get("arg_params", {})
-        
+    """Decryptor class for symmetric decryption through Fernet module.
+    Essential parameters such as generated keys and cipher modes 
+    are dunder-prefixed for reuse while decrypting the message.
+    """
+    def __init__(self, cipher_params={}, arg_params={}, **kwargs):
+        """Initializer for primitives and underlying cipher objects
+
+        :param kwargs: Consolidation of parameters consumed by base cipher library
+        :type dict
+        """
         self.__key = kwargs.get("key", None)
         self.__iv = kwargs.get("iv", None)
         self.__encoding = arg_params.get("encoding", "utf-8")
@@ -73,6 +93,13 @@ class Decryptor(cipher.Decryptor):
             )
 
     def decrypt(self, cipher_text):
+        """Template method for decryption of a cipher text
+        
+        :param cipher_text: input message for decryption
+        :type str
+        :returns: decryption output access/modification
+        :rtype str
+        """
         dec = self._cipher.decryptor()
         plain_text = dec.update(cipher_text) \
                     + dec.finalize()
