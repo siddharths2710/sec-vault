@@ -1,0 +1,48 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "business_card",
+    "Title": "Business Card",
+    "description": "Schema for accomodating Business Card details",
+    "fields": [
+        {
+            "name": "name",
+            "type": "str",
+            "required": true
+        },
+        {
+            "name": "company",
+            "type": "str",
+            "required": true
+        },
+        {
+            "name": "designation",
+            "type": "str",
+            "required": true
+        },
+        {
+            "name": "contact",
+            "type": "str",
+            "required": true
+        },
+        {
+            "name": "email",
+            "type": "str",
+            "required": true
+        },
+        {
+            "name": "address",
+            "type": "str",
+            "required": false
+        },
+        {
+            "name": "website",
+            "type": "str",
+            "required": false
+        },
+        {
+            "name": "handle",
+            "type": "str",
+            "required": false
+        }    
+    ]
+}

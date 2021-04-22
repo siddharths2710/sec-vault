@@ -1,0 +1,18 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "Notes",
+    "Title": "Notes",
+    "description": "Schema for accomodating Notes",
+    "fields": [
+        {
+            "name": "name",
+            "type": "str",
+            "required": true
+        },
+        {
+            "name": "content",
+            "type": "str",
+            "required": true
+        }
+    ]
+}

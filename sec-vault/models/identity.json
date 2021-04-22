@@ -1,0 +1,104 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "identity",
+    "Title": "Identity",
+    "description": "Schema for accomodating Identity details",
+    "fields": [
+        {
+            "name": "first_name",
+            "type": "str",
+            "required": true
+        },
+        {
+            "name": "middle_name",
+            "type": "str",
+            "required": false
+        },
+        {
+            "name": "last_name",
+            "type": "str",
+            "required": false
+        },
+        {
+            "name": "title",
+            "type": "str",
+            "required": true
+        },
+        {
+            "name": "nick_name",
+            "type": "str",
+            "required": false
+        },
+        {
+            "name": "SSN",
+            "type": "str",
+            "required": false
+        },
+        {
+            "name": "passport_number",
+            "type": "str",
+            "required": false
+        },
+        {
+            "name": "license_number",
+            "type": "str",
+            "required": false
+        },
+        {
+            "name": "phone",
+            "type": "str",
+            "required": false
+        },
+        {
+            "name": "email",
+            "type": "str",
+            "required": false
+        },
+        {
+            "name": "address",
+            "type": "str",
+            "required": false
+        },
+        {
+            "name": "city",
+            "type": "str",
+            "required": false
+        },
+        {
+            "name": "province",
+            "type": "str",
+            "required": false
+        },
+        {
+            "name": "zip",
+            "type": "int",
+            "required": false
+        },
+        {
+            "name": "country",
+            "type": "str",
+            "required": false
+        },
+        {
+            "name": "company",
+            "type": "str",
+            "required": false
+        },
+        {
+            "name": "designation",
+            "type": "str",
+            "required": false
+        },
+        {
+            "name": "website",
+            "type": "str",
+            "required": false
+        },
+        {
+            "name": "handle",
+            "type": "str",
+            "required": false
+        },
+        
+    ]
+}

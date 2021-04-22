@@ -1,0 +1,12 @@
+{
+    "name": "sec-vault",
+    "version": "1.0.0",
+    "description": "Password management CLI",
+    "author": "Siddharth Srinivasan",
+    "author_email": "siddharths2710@yahoo.com",
+    "url": "https://github.com/siddharths2710/sec-vault",
+    "license": "MIT",
+    "packages": ["src"],
+    "package_data": {"package" : ["backend/*"] },
+    "scripts": ["runner"]
+}

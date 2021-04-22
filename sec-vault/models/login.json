@@ -1,0 +1,23 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "login",
+    "Title": "Login",
+    "description": "Schema for accomodating login details",
+    "fields": [
+        {
+            "name": "service_name",
+            "type": "str",
+            "required": false
+        },
+        {
+            "name": "user_name",
+            "type": "str",
+            "required": true
+        },
+        {
+            "name": "password",
+            "type": "str",
+            "required": true
+        }
+    ]
+}

@@ -29,9 +29,10 @@ class CipherFactory(metaclass=CipherMeta):
         """
         self._yaml_configured = False
         self._parser_configured = False
-        self._kwargs = {}
+        self._parser_cfg = {}
 
     def load_cmd_cfg(self, parse_obj):
+        self._parser_cfg = parse_obj
         self._parser_configured = True
         
     def load_param_cfg(self, yaml_obj):
@@ -44,5 +45,5 @@ class CipherFactory(metaclass=CipherMeta):
     
     @property
     def decryptor(self):
-        if not self._parser_configured:
+        if not self._parser_configured or 'decrypt' not in self._cfg:
             raise Exception("Please provide appropriate CLI configs")

@@ -1,0 +1,43 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "bank_card",
+    "Title": "Bank Card",
+    "description": "Schema for accomodating Bank Card details",
+    "fields": [
+        {
+            "name": "cardholder_name",
+            "type": "str",
+            "required": true
+        },
+        {
+            "name": "card_type",
+            "type": "str",
+            "required": true
+        },
+        {
+            "name": "card_number",
+            "type": "int",
+            "required": true
+        },
+        {
+            "name": "security_code",
+            "type": "int",
+            "required": true
+        },
+        {
+            "name": "brand",
+            "type": "str",
+            "required": false
+        },
+        {
+            "name": "expiration_month",
+            "type": "int",
+            "required": true
+        },
+        {
+            "name": "expiration_year",
+            "type": "int",
+            "required": true
+        }
+    ]
+}
