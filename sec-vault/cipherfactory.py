@@ -32,7 +32,7 @@ class CipherFactory(metaclass=CipherMeta):
         self._parser_cfg = {}
 
     def load_cmd_cfg(self, parse_obj):
-        self._parser_cfg = parse_obj
+        self._parser_cfg = vars(parse_obj)
         self._parser_configured = True
         
     def load_param_cfg(self, yaml_obj):

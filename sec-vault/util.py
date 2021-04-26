@@ -1,9 +1,8 @@
 import os
 import ciphers
 import tempfile
-import cipherfactory
 
-def is_valid_suite(self, suite_name):
+def is_valid_suite(suite_name):
         try:
             __import__("ciphers.{}".format(suite_name), fromlist=[ciphers])
             return True
@@ -26,3 +25,14 @@ def safe_write(directory, name, content):
         else:
             final_path = tmp_path
         return final_path
+
+def get_abs_path(relative_path):
+    return os.path.join(os.getcwd(), relative_path)
+
+def is_valid_file(abs_path):
+    return os.path.exists(abs_path) and \
+            os.path.isfile(abs_path)
+
+def is_valid_dir(abs_path):
+    return os.path.exists(abs_path) and \
+            os.path.isdir(abs_path)

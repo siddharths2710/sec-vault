@@ -24,5 +24,5 @@ if __name__ == "__main__":
     cfg = {}
     if vault_args.cfg_file is not None:
         cfg = config.CipherConfig(vault_args.cfg_file).load()
-    factory.load_cmd_cfg(parser.__dict__)
+    factory.load_cmd_cfg(parser)
     factory.load_param_cfg(cfg)
