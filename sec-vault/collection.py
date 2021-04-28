@@ -13,12 +13,11 @@ class Collection:
         with open(vault_file, "r") as f_obj:
             res = dec.decrypt(f_obj.read())
             self._update_index(res)
-            self._data.update(res)
+            self._data.extend(res)
     
     def add_record(rcrd: record.Record):
         if self._cur_id + 1 in map(lambda record: record['record_id'], self._data):
             raise Exception("conflicting record ids present in collection")
-        
         content = {
             "record_id": self._cur_id + 1,
             "record": rcrd

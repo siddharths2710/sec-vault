@@ -36,6 +36,9 @@ class CipherFactory(metaclass=CipherMeta):
     def load_param_cfg(self, yaml_obj):
         """Maintains yaml config arguments"""
         self._yaml_configured = True
+    
+    def is_requested(self, operation):
+        return self._parser_cfg[operation]
 
     @property
     def encryptor(self):
