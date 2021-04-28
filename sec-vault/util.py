@@ -26,8 +26,11 @@ def safe_write(directory, name, content):
             final_path = tmp_path
         return final_path
 
+def join_path(parent_path, relative_path):
+    return os.path.join(parent_path, relative_path)
+
 def get_abs_path(relative_path):
-    return os.path.join(os.getcwd(), relative_path)
+    return join_path(os.getcwd(), relative_path)
 
 def is_valid_file(abs_path):
     return os.path.exists(abs_path) and \

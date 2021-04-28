@@ -9,8 +9,7 @@ import logging
 import tempfile
 
 class CipherMeta(type):
-    """Metaclass for accrual of supported suites
-    """
+    """Metaclass for accrual of supported suites"""
     def __init__(cls, *args, **kwargs):
         pass
 
@@ -25,25 +24,27 @@ class CipherFactory(metaclass=CipherMeta):
     cipher-based encryptor/decryptor
     """
     def __init__(self):
-        """
-        """
         self._yaml_configured = False
         self._parser_configured = False
         self._parser_cfg = {}
 
     def load_cmd_cfg(self, parse_obj):
+        """Maintains command line arguments"""
         self._parser_cfg = vars(parse_obj)
         self._parser_configured = True
         
     def load_param_cfg(self, yaml_obj):
+        """Maintains yaml config arguments"""
         self._yaml_configured = True
 
     @property
     def encryptor(self):
+        """Returns an encryptor instance"""
         if not self._parser_configured:
             raise Exception("Please provide appropriate CLI configs")
     
     @property
     def decryptor(self):
+        """Returns a decryptor instance"""
         if not self._parser_configured or 'decrypt' not in self._cfg:
             raise Exception("Please provide appropriate CLI configs")
