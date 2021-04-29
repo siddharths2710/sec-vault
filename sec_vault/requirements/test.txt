@@ -1,0 +1,7 @@
+argparse
+pyyaml
+gnupg~=2.3.1
+cryptography~=3.4.7
+pytest
+pytest-cov
+pytest-mock

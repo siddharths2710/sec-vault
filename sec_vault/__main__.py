@@ -2,6 +2,7 @@
 
 import os
 import util
+import view
 import parser
 import config
 import record
@@ -17,6 +18,7 @@ cfg = config.CipherConfig(vault_args.cfg_file)
 cfg_data = {}
 
 operation_callback = {
+    "show_params": _show_params,
     "create_vault": factory.create_vault,
     "add_entry": _add_record_to_vault,
     "del_entry": _del_entry_from_vault,
@@ -25,6 +27,12 @@ operation_callback = {
     "display_vault": _display_vault,
     "search_vault": _search_vault
 }
+
+def _show_params():
+    view_obj = view.View()
+    view_obj.print("------Supported parameter values for {}---------".format(vault_args.cipher_suite) )
+    for param in factory.cipher_args:
+        view_obj.print("{}: {}".format(param, ", ".join(factory.cipher_args[param])))
 
 def _populate_from_vault():
     c_obj = collection.Collection()

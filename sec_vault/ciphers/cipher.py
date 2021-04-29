@@ -56,4 +56,4 @@ class Decryptor:
 
 if __name__ != "__main__":
     CIPHER_PKG = {}
-    CIPHER_SUITE = {}
+    CIPHER_ARGS = {}

@@ -23,6 +23,8 @@ class CLIParser(argparse.ArgumentParser):
         self.add_argument("--cipher-suite", action="store", type=str, \
                         dest="cipher_suite", required=True, help="Specify the cipher backend, one of {}".format(
                                     ", ".join(cipherfactory.CipherFactory.cipher_suites)))
+        self.add_argument("--show-cipher-params", required=False, dest="show_params",
+                            action="store_true", help="Display supported config parameters for given cipher suite")
         self.add_argument("--add-entry", action="store_true", help="Add a new record for secure storage into the vault")
         self.add_argument("--del-entry", action="store_true", help="Delete a record in the vault")
         self.add_argument("--modify-entry", action="store_true", help="Modify a record in the vault")

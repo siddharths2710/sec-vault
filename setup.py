@@ -7,7 +7,7 @@ except ImportError:
 
 if __name__ == "__main__":
     cfg_file = open('config.json',)
-    reqs_file = open('src/requirements.txt',)
+    reqs_file = open('sec_vault/requirements/base.txt',)
     config = json.load(cfg_file)
     reqs = [req.strip() for req in reqs_file.readlines()]
     config["install_requires"] = reqs

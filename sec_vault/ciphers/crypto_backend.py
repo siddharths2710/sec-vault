@@ -24,18 +24,18 @@ class Encryptor(cipher.Encryptor):
         """
         self._algorithm = cipher_params.get("algorithm", "AES")
         self._mode = cipher_params.get("mode", "CBC")
-        self.__key = os.urandom(arg_params.get("key_size", 32))
-        self.__iv = os.urandom(arg_params.get("iv_size", 16))
+        self.__key = arg_params.get("key", None) or os.urandom(arg_params.get("key_size", 32))
+        self.__iv = arg_params.get("iv", None) or os.urandom(arg_params.get("iv_size", 16))
         self.__encoding = arg_params.get("encoding", "utf-8")
         self.__pad_len = 0
         self.__algorithm = arg_params.get("algorithm", {})
         self.__mode = arg_params.get("mode", {})
-        if self._algorithm not in CIPHER_SUITE['algorithms']:
+        if self._algorithm not in CIPHER_ARGS['algorithms']:
             raise Exception("Unsupported algo type {}".format(self._algorithm))
-        if self._mode not in CIPHER_SUITE['modes']:
+        if self._mode not in CIPHER_ARGS['modes']:
             raise Exception("Unsupported mode type {}".format(self._mode))
-        algo_obj = eval("algorithms.{}".format(self._algorithm))
-        mode_obj = eval("modes.{}".format(self._mode))
+        algo_obj = vars(algorithms)[self._algorithm]
+        mode_obj = vars(modes)[self._mode]
         self._cipher = Cipher(
                 algo_obj(self.__key, **self.__algorithm),
                 mode_obj(self.__iv, **self.__mode),
@@ -70,19 +70,19 @@ class Decryptor(cipher.Decryptor):
         :param kwargs: Consolidation of parameters consumed by base cipher library
         :type dict
         """
-        self.__key = kwargs.get("key", None)
-        self.__iv = kwargs.get("iv", None)
+        self.__key = arg_params.get("key", None)
+        self.__iv = arg_params.get("iv", None)
         self.__encoding = arg_params.get("encoding", "utf-8")
-        self.__pad_len = kwargs.get("pad_len", 0)
+        self.__pad_len = arg_params.get("pad_len", 0)
         if any([self.__key, self.__iv]) is None:
             raise Exception("invalid seed params provided for decryption")
         self._algorithm = cipher_params.get("algorithm", "AES")
         self._mode = cipher_params.get("mode", "CBC")
         self.__algorithm = arg_params.get("algorithm", {})
         self.__mode = arg_params.get("mode", {})
-        if self._algorithm not in CIPHER_SUITE['algorithms']:
+        if self._algorithm not in CIPHER_ARGS['algorithms']:
             raise Exception("Unsupported algo type {}".format(self._algorithm))
-        if self._mode not in CIPHER_SUITE['modes']:
+        if self._mode not in CIPHER_ARGS['modes']:
             raise Exception("Unsupported mode type {}".format(self._mode))
         algo_obj = eval("algorithms.{}".format(self._algorithm))
         mode_obj = eval("modes.{}".format(self._mode))
@@ -107,5 +107,5 @@ class Decryptor(cipher.Decryptor):
 
 if __name__ != "__main__":
     CIPHER_PKG = {'algorithms': algorithms, 'modes': modes}
-    CIPHER_SUITE = {k:cipher_utils.expand_attrs(v) \
+    CIPHER_ARGS = {k:cipher_utils.expand_attrs(v) \
                     for k,v in CIPHER_PKG.items()}
