@@ -1,5 +1,7 @@
 import re
+import os
 import csv
+import stat
 import copy
 import util
 import base64
@@ -27,6 +29,19 @@ class CipherFactory(metaclass=CipherMeta):
         self._yaml_configured = False
         self._parser_configured = False
         self._parser_cfg = {}
+
+    def create_vault(self):
+        if "vault_file" not in self._parser_cfg:
+            raise Exception("cfg parser not loaded")
+        vault_path = self._parser_cfg["vault_file"]
+        elif not os.path.exists(vault_path):
+            raise Exception("vault file already exists: {}".format(vault_path))
+        elif not os.path.isabs(vault_path):
+            util.safe_write(os.getcwd(), vault_path, "")
+        else:
+            util.safe_write("", vault_path, "")
+        os.chmod(vault_path, 
+            stat.S_IRUSR | stat.S_IWUSR | stat.S_ENFMT)
 
     def load_cmd_cfg(self, parse_obj):
         """Maintains command line arguments"""

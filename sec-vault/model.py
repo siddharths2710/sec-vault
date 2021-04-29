@@ -45,6 +45,12 @@ class Model(metaclass=Schema):
         if not util.is_valid_dir(util.get_abs_path("models")):
             raise Exception("unable to access schema directory")
     
+    @staticmethod
+    def get_models():
+        if not os.path.exists("models") or not os.path.isdir("models"):
+            raise Exception("Please maintain models directory")
+        return [ re.sub("models/|.json", mdl) for mdl in glob.glob("models/*")]
+
     def _validate_schema(self, schema):
         """Validator method for a chosen schema"""
         try:

@@ -26,3 +26,9 @@ class Record:
             self._content[field['name']] = view_obj.prompt_read(field['name'])
         if not self._model.validate_record(self._content):
             raise Exception("details entered for the given record are invalid")
+    
+    def display(self):
+        """Displays contents of a record"""
+        view_obj = view.View()
+        for field in self._content:
+            view_obj.print("\t {} : {}", field, self._content[field])
