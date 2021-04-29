@@ -32,3 +32,9 @@ class Record:
         view_obj = view.View()
         for field in self._content:
             view_obj.print("\t {} : {}", field, self._content[field])
+    
+    def modify_field(self, key, val):
+        """Modifies content of the given field"""
+        if key not in self._content:
+            raise Exception("field {} missing in record".format(key))
+        self._content[key] = val

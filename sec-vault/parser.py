@@ -33,4 +33,4 @@ class CLIParser(argparse.ArgumentParser):
                         dest="record_type", required=True, 
                         help="Specify the record type, one of" + ", ".join(model.Model.get_models()))
         self.add_argument("--cipher-config-path", type=str, 
-                help="Path to YAML-based parameter file", dest="cfg_path", required=False)
+                help="Path to YAML-based parameter file", dest="cfg_path", default="cfg.yaml", required=False)

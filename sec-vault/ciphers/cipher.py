@@ -15,8 +15,10 @@ class Encryptor:
         :param kwargs: Consolidation of parameters consumed by base cipher library
         :type dict
         """
-        for key in dict(cipher_params.items() + arg_params.items() + kwargs.items()):
-            setattr(self, "__{}".format(key), value)
+        param_dict = cipher_params
+        param_dict.update(arg_params); param_dict.update(kwargs)
+        for key in param_dict:
+            setattr(self, "__{}".format(key), param_dict[key])
     
     def encrypt(self, plain_text: str):
         """Template method for encryption of a single message

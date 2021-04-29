@@ -35,9 +35,9 @@ class Encryptor(cipher.Encryptor):
                 backend = eval("backend.{}".format(backend_val))
             except:
                 raise Exception("backend {} not supported by Fernet".format(backend_val))
-        self.__key = Fernet.generate_key()
+        self._key = cipher_params.get("key", Fernet.generate_key())
         self.__encoding = kwargs.get("arg_params", {}).get("encoding", "utf-8")
-        self._fernet = Fernet(self.__key, backend, **kwargs.get('cipher_params',{}))
+        self.fernet = Fernet(self._key, backend, **kwargs.get('cipher_params',{}))
 
     def encrypt(self, plain_text: str):
         """Template method for encryption of a single message
@@ -47,7 +47,7 @@ class Encryptor(cipher.Encryptor):
         :returns: encrypted output for secure storage
         :rtype str
         """
-        return self._fernet.encrypt(plain_text.encode(self.__encoding))
+        return self.fernet.encrypt(plain_text.encode(self.__encoding))
 
 class Decryptor(cipher.Decryptor):
     """Decryptor class for symmetric decryption through Fernet module.
@@ -72,9 +72,9 @@ class Decryptor(cipher.Decryptor):
                 backend = eval("backend.{}".format(backend_val))
             except:
                 raise Exception("backend {} not supported by Fernet".format(backend_val))
-        self.__key = cipher_params.pop("key")
+        self._key = cipher_params.pop("key")
         self.__encoding = kwargs.get("arg_params", {}).get("encoding", "utf-8")
-        self._fernet = Fernet(self.__key, backend, **cipher_params)
+        self.fernet = Fernet(self._key, backend, **cipher_params)
 
     def decrypt(self, cipher_text):
         """Template method for decryption of a cipher text
@@ -84,7 +84,7 @@ class Decryptor(cipher.Decryptor):
         :returns: decryption output access/modification
         :rtype str
         """
-        return self._fernet.decrypt(cipher_text).decode(self.__encoding)
+        return self.fernet.decrypt(cipher_text).decode(self.__encoding)
 
 if __name__ != "__main__":
     CIPHER_PKG = {'backend': backend_package}

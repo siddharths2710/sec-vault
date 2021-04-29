@@ -18,6 +18,9 @@ class Collection:
     def get_collection(self, enc: ciphers.cipher.Encryptor):
         return enc.encrypt(json.dumps(self._data))
 
+    def get_record(self, record_id: int):
+        return self._data[self._calc_record_index(record_id)]
+
     def add_record(self, rcrd: record.Record):
         """Helper for record insertion
         
@@ -57,14 +60,8 @@ class Collection:
         :param record: The record object with modification
         :type Record
         """
-        tmp_id = self._data[record_id]['record_id']
-        if tmp_id != record_id:
-            try:
-                tmp_id = [idx for idx, rcrd in 
-                    enumerate(self._data) if record_id == rcrd['record_id']][0]
-                self._data[tmp_id]['record'] = record
-            except Exception:
-                raise Exception("Please enter valid record id")
+        res_id = self._calc_record_index(record_id)
+        self._data[res_id]['record'] = record
 
     def modify_field(self, record_id, field, val):
         """Helper for field modification within a record
@@ -78,14 +75,14 @@ class Collection:
         :param value: The value of corresponding field
         :type str
         """
-        tmp_id = self._data[record_id]['record_id']
-        if tmp_id != record_id:
+        res_id = self._calc_record_index(record_id)
+        self._data[res_id]['record'].modify_field(field, val)
+
+    def _calc_record_index(self, record_id):
+        if self._data[record_id]['record_id'] != record_id:
             try:
-                tmp_id = [idx for idx, rcrd in 
+                return [idx for idx, rcrd in 
                     enumerate(self._data) if record_id == rcrd['record_id']][0]
-                if field not in self._data[tmp_id]:
-                    raise Exception("{} not in record {}".format(field, tmp_id))
-                self._data[tmp_id][field] = val
             except IndexError:
                 raise Exception("Please enter valid record id")
             except Exception:

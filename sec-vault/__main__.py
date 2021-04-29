@@ -12,7 +12,7 @@ import cipherfactory
 
 vault_parser = parser.CLIParser()
 vault_args = vault_parser.parse_args()
-factory = cipherfactory.CipherFactory()
+factory = cipherfactory.CipherFactory(vault_args)
 cfg = config.CipherConfig(vault_args.cfg_file)
 cfg_data = {}
 
@@ -31,13 +31,13 @@ def _populate_from_vault():
     if not os.path.exists(vault_args.vault_file):
         factory.create_vault()
     with open(vault_args.vault_file, 'r') as f_obj:
-        c_obj.load_vault(f_obj.read(), factory.decryptor())
+        c_obj.load_vault(f_obj.read(), factory.decryptor)
     return c_obj
 
 def _store_in_vault(c_obj: collection.Collection):
     if not os.path.exists(vault_args.vault_file):
         factory.create_vault()
-    content = c_obj.get_collection(factory.encryptor())
+    content = c_obj.get_collection(factory.encryptor)
     util.safe_write(os.getcwd(), vault_args.vault_file , content)
     
 def _add_record_to_vault():    
@@ -91,7 +91,13 @@ def _display_vault():
     content_wrapper.display()
 
 def _search_vault():
-    pass
+    view = view.View()
+    content_wrapper = _populate_from_vault()
+    rcrd_id = view.prompt_read("Enter id of the record you wish to modify:")
+    if not rcrd_id.isnumeric():
+        raise Exception("Please enter a valid record id")
+    rcrd = collection.get_record(int(rcrd_id))
+    rcrd.display()
 
 if __name__ == "__main__":
     if vault_args.cfg_file is not None:

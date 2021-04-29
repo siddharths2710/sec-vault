@@ -21,18 +21,18 @@ class Encryptor(cipher.Encryptor):
         :param kwargs: Consolidation of parameters consumed by base cipher library
         :type dict
         """
-        backend = None
-        backend_val = cipher_params.pop("backend", None)
-        if backend_val is not None:
+        backend_obj = None
+        self._backend = cipher_params.pop("backend", None)
+        if self._backend is not None:
             try:
-                if backend_val not in CIPHER_SUITE['backend']:
+                if self._backend not in CIPHER_SUITE['backend']:
                     raise Exception("")
-                backend = eval("backend.{}".format(backend_val))
+                backend_obj = eval("backend.{}".format(self._backend))
             except:
-                raise Exception("backend {} not supported by Fernet".format(backend_val))
-        self.__key = Fernet.generate_key()
+                raise Exception("backend {} not supported by Fernet".format(self._backend))
+        self._key = cipher_params.get("key", Fernet.generate_key()) 
         self.__encoding = kwargs.get("arg_params", {}).get("encoding", "utf-8")
-        self._fernet = Fernet(self.__key, backend, **kwargs.get('cipher_params',{}))
+        self.fernet = Fernet(self._key, backend_obj, **kwargs.get('cipher_params',{}))
 
     def encrypt(self, plain_text: str):
         """Template method for encryption of a single message
@@ -42,7 +42,7 @@ class Encryptor(cipher.Encryptor):
         :returns: encrypted output for secure storage
         :rtype str
         """
-        return self._fernet.encrypt(plain_text.encode(self.__encoding))
+        return self.fernet.encrypt(plain_text.encode(self.__encoding))
 
 class Decryptor(cipher.Decryptor):
     """Decryptor class for openssl backend via Fernet.
@@ -55,20 +55,20 @@ class Decryptor(cipher.Decryptor):
         :param kwargs: Consolidation of parameters consumed by base cipher library
         :type dict
         """
-        backend = None
-        backend_val = cipher_params.pop("backend", None)
+        backend_obj = None
+        self._backend = cipher_params.pop("backend", None)
         if "key" not in cipher_params:
             raise Exception("Fernet decryption requires a symmetric key as input")
-        if backend_val is not None:
+        if self._backend is not None:
             try:
-                if backend_val not in CIPHER_SUITE['backend']:
+                if self._backend not in CIPHER_SUITE['backend']:
                     raise Exception("")
-                backend = eval("backend.{}".format(backend_val))
+                backend_obj = eval("backend.{}".format(self._backend))
             except:
-                raise Exception("backend {} not supported by Fernet".format(backend_val))
-        self.__key = cipher_params.pop("key")
+                raise Exception("backend {} not supported by Fernet".format(self._backend))
+        self._key = cipher_params.pop("key")
         self.__encoding = kwargs.get("arg_params", {}).get("encoding", "utf-8")
-        self._fernet = Fernet(self.__key, backend, **cipher_params)
+        self.fernet = Fernet(self._key, backend_obj, **cipher_params)
 
     def decrypt(self, cipher_text):
         """Template method for decryption of a cipher text
@@ -78,7 +78,7 @@ class Decryptor(cipher.Decryptor):
         :returns: decryption output access/modification
         :rtype str
         """
-        return self._fernet.decrypt(cipher_text).decode(self.__encoding)
+        return self.fernet.decrypt(cipher_text).decode(self.__encoding)
 
 if __name__ != "__main__":
     CIPHER_PKG = {'backend': cryptography.hazmat.backends.openssl.backend}
