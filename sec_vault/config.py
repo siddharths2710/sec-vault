@@ -1,6 +1,7 @@
 import os
 import yaml
 import logging
+import tempfile
 
 import ciphers
 
@@ -27,14 +28,19 @@ class CipherConfig:
             with open(cfg_path, 'r') as cfg_file:
                 self._cfg = yaml.load(cfg_file, Loader=yaml.FullLoader)
         except:
-            logging.error("Invalid config file format", exc_info=True)
+            raise Exception("Invalid config file format")
         return self._cfg
-    
-    def store(self, config: dict, cfg_path: str):
+        
+    def store(self, cfg_filename, cfg_dirname, **config):
         """Template method for dumping config into yaml file
         """
+        cfg_fd, cfg_path = tempfile.mkstemp(
+             prefix = cfg_filename + "_", dir = cfg_dirname, 
+             text = True
+             )
         try:
-            with open(cfg_path, 'w') as cfg_file:
-                self._cfg = yaml.dump(cfg_file, sort_keys=True)
+            with os.fdopen(cfg_fd, 'w') as cfg_file:
+                yaml.dump(config, cfg_file)
+            return cfg_path
         except:
-            logging.error("Invalid config file format", exc_info=True)
+            raise Exception("Invalid config file format")

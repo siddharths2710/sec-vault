@@ -9,6 +9,7 @@ import base64
 import pkgutil
 import tempfile
 
+import view
 import ciphers
 import ciphers.cipher
 import ciphers.cipher_utils
@@ -62,11 +63,26 @@ class CipherFactory(metaclass=CipherMeta):
             self._cipher_configured = True
     
     def is_requested(self, operation):
-        return self._parser_cfg[operation]
+        return bool(self._parser_cfg[operation])
 
     def _update_cfg_file(self):
         """Flushes new content into the config file"""
         cfg_attr = vars(self.encryptor)
+        arg_params = {k:v for k,v in cfg_attr.items() 
+                        if bool(re.match("_Encryptor__+", k))}
+        cipher_params = {k:v for k,v in cfg_attr.items() 
+                        if bool(re.match("_+", k)) and 
+                        k not in arg_params}
+        orig_cfg_path = self._parser_cfg['cfg_path']
+        cfg_filename = os.path.basename(orig_cfg_path)
+        cfg_dirname = os.path.dirname(orig_cfg_path) \
+                    if os.path.isabs(orig_cfg_path) else os.getcwd()
+        final_path = self._cipher_cfg.store(cfg_filename = cfg_filename,
+                                cfg_dirname = cfg_dirname,
+                                arg_params = arg_params,
+                                cipher_params = cipher_params)
+        view_obj = view.View()
+        view_obj.print("updated cipher configuration flushed to: " + final_path)
 
     @property
     def encryptor(self):
