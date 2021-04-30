@@ -1,39 +1,11 @@
+import os
 import json
 import glob
 import util
-import string
 import logging
 import traceback
 
-class Schema(type):
-    """Metaclass for reserving the schema blueprint"""
-    def __init__(self, *args, **kwargs):
-        self._field = \
-        """
-        {
-            "name": ${name},
-            "type": ${type},
-            "required": ${required}
-        }
-        """
-        self._schema = \
-        """
-        {
-            "Title": ${Title},
-            "description": ${description},
-            "fields": ${fields}
-        }
-        """
-    
-    @property
-    def model_template(self):
-        return string.Template(self._schema)
-
-    @property
-    def field_template(self):
-        return string.Template(self._field)
-
-class Model(metaclass=Schema):
+class Model(metaclass=util.Schema):
     """Represents a data model for a credential record"""
     def __init__(self, model):
         """Initializes a model object for the given schema"""
@@ -44,12 +16,6 @@ class Model(metaclass=Schema):
                             "{}.json".format(model)))
         if not util.is_valid_dir(util.get_abs_path("models")):
             raise Exception("unable to access schema directory")
-    
-    @staticmethod
-    def get_models():
-        if not os.path.exists("models") or not os.path.isdir("models"):
-            raise Exception("Please maintain models directory")
-        return [ re.sub("models/|.json", mdl) for mdl in glob.glob("models/*")]
 
     def _validate_schema(self, schema):
         """Validator method for a chosen schema"""

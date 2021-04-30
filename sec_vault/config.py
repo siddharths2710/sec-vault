@@ -29,18 +29,24 @@ class CipherConfig:
                 self._cfg = yaml.load(cfg_file, Loader=yaml.FullLoader)
         except:
             raise Exception("Invalid config file format")
+    
+    def __call__(self):
         return self._cfg
+    
+    def _update_cfg(self, config):
+        self._cfg.update(config)
         
     def store(self, cfg_filename, cfg_dirname, **config):
         """Template method for dumping config into yaml file
         """
+        self._update_cfg(config)
         cfg_fd, cfg_path = tempfile.mkstemp(
              prefix = cfg_filename + "_", dir = cfg_dirname, 
              text = True
              )
         try:
             with os.fdopen(cfg_fd, 'w') as cfg_file:
-                yaml.dump(config, cfg_file)
+                yaml.dump(self._cfg, cfg_file)
             return cfg_path
         except:
             raise Exception("Invalid config file format")

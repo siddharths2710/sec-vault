@@ -109,9 +109,9 @@ def _search_vault():
 
 if __name__ == "__main__":
     if vault_args.cfg_file is not None:
-        cfg_data = cfg.load()
+        cfg.load()
     factory.load_cmd_cfg(parser)
-    factory.load_param_cfg(cfg_data)
+    factory.load_param_cfg(cfg)
     try:
         for operation in operation_callback:
             if factory.is_requested(operation):
