@@ -1,4 +1,3 @@
-import os
 import math
 import random
 import string
@@ -24,8 +23,8 @@ class Encryptor(cipher.Encryptor):
         """
         self._algorithm = cipher_params.get("algorithm", "AES")
         self._mode = cipher_params.get("mode", "CBC")
-        self.__key = arg_params.get("key", None) or os.urandom(arg_params.get("key_size", 32))
-        self.__iv = arg_params.get("iv", None) or os.urandom(arg_params.get("iv_size", 16))
+        self.__key = arg_params.get("key", None) or cipher_utils.gen_random_secret(arg_params.get("key_size", 32))
+        self.__iv = arg_params.get("iv", None) or cipher_utils.gen_random_secret(arg_params.get("iv_size", 16))
         self.__encoding = arg_params.get("encoding", "utf-8")
         self.__pad_len = 0
         self.__algorithm = arg_params.get("algorithm", {})

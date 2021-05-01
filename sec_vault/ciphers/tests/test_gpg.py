@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 
-# This test simulates the scenario where sender signs the message 
-# and recipient decrypts the same using his passphrase
+# This test simulates the scenario where the message is signed using
+# sender's gpg key and is decrypted by recipient's gpg key
 
 import pytest
 import gnupg

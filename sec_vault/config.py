@@ -1,4 +1,5 @@
 import os
+import re
 import yaml
 import logging
 import tempfile
@@ -26,7 +27,12 @@ class CipherConfig:
             raise Exception("unable to find cfg path for loading: {}".format(cfg_path))
         try:
             with open(cfg_path, 'r') as cfg_file:
-                self._cfg = yaml.load(cfg_file, Loader=yaml.FullLoader)
+                cfg = yaml.load(cfg_file, Loader=yaml.FullLoader)
+                for key in cfg:
+                    if re.match("^.+_bytes$", key) is not None:
+                        self._cfg[key[:-6]] = cfg[key].encode('utf-8')
+                    else:
+                        self._cfg[key] = cfg[key]
         except:
             raise Exception("Invalid config file format")
     
@@ -34,7 +40,18 @@ class CipherConfig:
         return self._cfg
     
     def _update_cfg(self, config):
-        self._cfg.update(config)
+        config_serial = {}
+        for param in config:
+            param_serial = {}
+            for field in config[param]:
+                if isinstance(config[param][field], bytes):
+                    param_serial["{}_bytes".format(field)] = config[param][field].decode('utf-8')
+                elif isinstance(config[param][field], int) or \
+                     isinstance(config[param][field], float) or \
+                     isinstance(config[param][field], str):
+                    param_serial[field] = config[param][field]
+            config_serial[param] = param_serial
+        self._cfg.update(config_serial)
         
     def store(self, cfg_filename, cfg_dirname, **config):
         """Template method for dumping config into yaml file

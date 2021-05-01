@@ -1,9 +1,11 @@
 import re
 import os
 import stat
+import view
 import util
 import config
 import ciphers
+import argparse
 
 class CipherFactory():
     """Factory wrapper for dispatching appropriate
@@ -33,12 +35,12 @@ class CipherFactory():
             stat.S_IRUSR | stat.S_IWUSR | stat.S_ENFMT)
         self._update_cfg_file()
 
-    def load_cmd_cfg(self, parse_obj):
+    def load_cmd_cfg(self, parse_obj: argparse.Namespace):
         """Maintains command line arguments"""
         self._parser_cfg = vars(parse_obj)
         self._parser_configured = True
         
-    def load_param_cfg(self, config_obj):
+    def load_param_cfg(self, config_obj: dict):
         """Maintains yaml config arguments"""
         if not self._parser_configured:
             raise Exception("Please provide CLI arguments into factory")
@@ -53,11 +55,11 @@ class CipherFactory():
     def _update_cfg_file(self):
         """Flushes new content into the config file"""
         cfg_attr = vars(self._enc)
-        arg_params = {k:v for k,v in cfg_attr.items() 
+        arg_params = {k[12:]:v for k,v in cfg_attr.items() 
                         if bool(re.match("_Encryptor__+", k))}
-        cipher_params = {k:v for k,v in cfg_attr.items() 
+        cipher_params = {k[1:]:v for k,v in cfg_attr.items() 
                         if bool(re.match("_+", k)) and 
-                        k not in arg_params}
+                        not bool(re.match("_Encryptor__+", k))}
         orig_cfg_path = self._parser_cfg['cfg_path']
         cfg_filename = os.path.basename(orig_cfg_path)
         cfg_dirname = os.path.dirname(orig_cfg_path) \
@@ -88,7 +90,7 @@ class CipherFactory():
     def decryptor(self):
         """Returns a decryptor instance"""
         self._load_cipher_module()
+        import pdb; pdb.set_trace()
         if self._dec is None:
             self._dec = self._cipher_obj.Decryptor(self._cfg_obj())
-            self._update_cfg_file()
         return self._dec
