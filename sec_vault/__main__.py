@@ -13,7 +13,7 @@ import cipherfactory
 
 vault_parser = parser.CLIParser()
 vault_args = vault_parser.parse_args()
-factory = cipherfactory.CipherFactory(vault_args)
+factory = cipherfactory.CipherFactory()
 cfg = config.CipherConfig(vault_args.cfg_file)
 cfg_data = {}
 
@@ -110,7 +110,7 @@ def _search_vault():
 if __name__ == "__main__":
     if vault_args.cfg_file is not None:
         cfg.load()
-    factory.load_cmd_cfg(parser)
+    factory.load_cmd_cfg(vault_args)
     factory.load_param_cfg(cfg)
     try:
         for operation in operation_callback:

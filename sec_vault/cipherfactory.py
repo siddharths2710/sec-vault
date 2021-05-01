@@ -44,8 +44,8 @@ class CipherFactory():
             raise Exception("Please provide CLI arguments into factory")
         elif not self._parser_cfg["create_vault"]:
             del self._cfg_obj
-            self._cfg_obj = config_obj
-            self._cipher_configured = True
+        self._cfg_obj = config_obj
+        self._cipher_configured = True
     
     def is_requested(self, operation):
         return bool(self._parser_cfg[operation])
