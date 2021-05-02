@@ -1,6 +1,4 @@
 import math
-import random
-import string
 import base64
 import logging
 from cryptography.hazmat.backends import default_backend
@@ -23,8 +21,8 @@ class Encryptor(cipher.Encryptor):
         """
         self._algorithm = cipher_params.get("algorithm", "AES")
         self._mode = cipher_params.get("mode", "CBC")
-        self.__key = arg_params.get("key", None) or cipher_utils.gen_random_secret(arg_params.get("key_size", 32))
-        self.__iv = arg_params.get("iv", None) or cipher_utils.gen_random_secret(arg_params.get("iv_size", 16))
+        self.__key = arg_params.get("key", None) or cipher_utils.gen_random_secret(arg_params.get("key_size", 32)).encode('utf-8')
+        self.__iv = arg_params.get("iv", None) or cipher_utils.gen_random_secret(arg_params.get("iv_size", 16)).encode('utf-8')
         self.__encoding = arg_params.get("encoding", "utf-8")
         self.__pad_len = 0
         self.__algorithm = arg_params.get("algorithm", {})
@@ -50,9 +48,9 @@ class Encryptor(cipher.Encryptor):
         :rtype str
         """
         l = len(plain_text)
-        self.__pad_len = (1<<(int(math.log2(l)) + 2)) - l
+        self.__pad_len = (1<<(int(math.log2(l)) + 3)) - l
         ptext_padded =  plain_text + \
-            (random.choice(string.printable) * self.__pad_len)
+            cipher_utils.gen_random_secret(self.__pad_len)
         enc = self._cipher.encryptor()
         cipher_text = enc.update(ptext_padded.encode(self.__encoding)) \
                       + enc.finalize()

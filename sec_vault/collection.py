@@ -1,4 +1,5 @@
 import json
+import view
 import record
 import traceback
 import ciphers.cipher
@@ -9,13 +10,20 @@ class Collection:
         self._data = []
         self._cur_id = 0
     
-    def load_vault(self, vault_file: str, dec: ciphers.cipher.Decryptor):
-        with open(vault_file, "r") as f_obj:
-            res = dec.decrypt(f_obj.read())
+    def load_vault(self, vault_content: str, dec: ciphers.cipher.Decryptor):
+        res = "[]"
+        try:
+            res = dec.decrypt(vault_content)
+        except TypeError:
+            res = dec.decrypt(str(vault_content)[2:-1])
+        except Exception:
+            traceback.print_exc()
+        finally:
             self._update_index(res)
             self._data.extend(json.loads(res))
     
     def get_collection(self, enc: ciphers.cipher.Encryptor):
+        import pdb; pdb.set_trace()
         return enc.encrypt(json.dumps(self._data))
 
     def get_record(self, record_id: int):
@@ -99,9 +107,9 @@ class Collection:
     
     def display(self):
         """Helper for displaying a collection"""
-        view = view.View()
-        view.print("Vault contents: ")
-        view.print("--------------------")
+        view_obj = view.View()
+        view_obj.print("Vault contents: ")
+        view_obj.print("--------------------")
         for record in self._data:
-            view.print("Record id: ", record['record_id'])
+            view_obj.print("Record id: ", record['record_id'])
             record['record'].display()

@@ -17,18 +17,20 @@ def valid_encr_attr(attr):
     return attr[:12] == '_Encryptor__'
 
 def safe_write(directory, name, content):
+        _name_prefix, _name_suffix = name.split(".")
         fd,  tmp_path = tempfile.mkstemp(
-                        prefix = "{}_".format(name),
+                        prefix = "{}_".format(_name_prefix),
+                        suffix= ".{}".format(_name_suffix),
                         dir = directory
                     )
-        with os.fdopen(fd, "w") as tmp_file:
+        with os.fdopen(fd, "wb") as tmp_file:
             tmp_file.write(content)
-        final_path = os.path.join(directory, name)
-        if not os.path.isfile(final_path):
-            os.rename(tmp_file, final_path)
+        _final_path = os.path.join(directory, name)
+        if not os.path.exists(_final_path):
+            os.rename(tmp_path, _final_path)
         else:
-            final_path = tmp_path
-        return final_path
+            _final_path = tmp_path
+        return _final_path
 
 def join_path(parent_path, relative_path):
     return os.path.join(parent_path, relative_path)

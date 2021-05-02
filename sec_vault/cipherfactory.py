@@ -25,22 +25,22 @@ class CipherFactory():
         if "vault_file" not in self._parser_cfg:
             raise Exception("vault file not specified in CLI")
         vault_path = self._parser_cfg["vault_file"]
-        if not os.path.exists(vault_path):
+        if os.path.exists(vault_path):
             raise Exception("vault file already exists: {}".format(vault_path))
         elif not os.path.isabs(vault_path):
-            util.safe_write(os.getcwd(), vault_path, factory.encryptor.encrypt("[]"))
+            util.safe_write(os.getcwd(), vault_path, self.encryptor.encrypt("[]"))
         else:
-            util.safe_write("", vault_path, factory.encryptor.encrypt("[]"))
+            util.safe_write("", vault_path, self.encryptor.encrypt("[]"))
         os.chmod(vault_path, 
             stat.S_IRUSR | stat.S_IWUSR | stat.S_ENFMT)
-        self._update_cfg_file()
+        self.update_cfg_file()
 
     def load_cmd_cfg(self, parse_obj: argparse.Namespace):
         """Maintains command line arguments"""
         self._parser_cfg = vars(parse_obj)
         self._parser_configured = True
         
-    def load_param_cfg(self, config_obj: dict):
+    def load_param_cfg(self, config_obj: config.CipherConfig):
         """Maintains yaml config arguments"""
         if not self._parser_configured:
             raise Exception("Please provide CLI arguments into factory")
@@ -52,7 +52,7 @@ class CipherFactory():
     def is_requested(self, operation):
         return bool(self._parser_cfg[operation])
 
-    def _update_cfg_file(self):
+    def update_cfg_file(self):
         """Flushes new content into the config file"""
         cfg_attr = vars(self._enc)
         arg_params = {k[12:]:v for k,v in cfg_attr.items() 
@@ -82,15 +82,14 @@ class CipherFactory():
         """Returns an encryptor instance"""
         self._load_cipher_module()
         if self._enc is None:
-            self._enc = self._cipher_obj.Encryptor(self._cfg_obj())
-            self._update_cfg_file()
+            self._enc = self._cipher_obj.Encryptor(**self._cfg_obj())
+            #self.update_cfg_file()
         return self._enc
     
     @property
     def decryptor(self):
         """Returns a decryptor instance"""
         self._load_cipher_module()
-        import pdb; pdb.set_trace()
         if self._dec is None:
-            self._dec = self._cipher_obj.Decryptor(self._cfg_obj())
+            self._dec = self._cipher_obj.Decryptor(**self._cfg_obj())
         return self._dec

@@ -14,7 +14,7 @@ import cipherfactory
 vault_parser = parser.CLIParser()
 vault_args = vault_parser.parse_args()
 factory = cipherfactory.CipherFactory()
-cfg = config.CipherConfig(vault_args.cfg_file)
+cfg = config.CipherConfig()
 cfg_data = {}
 
 operation_callback = {
@@ -38,7 +38,7 @@ def _populate_from_vault():
     c_obj = collection.Collection()
     if not os.path.exists(vault_args.vault_file):
         factory.create_vault()
-    with open(vault_args.vault_file, 'r') as f_obj:
+    with open(vault_args.vault_file, 'rb') as f_obj:
         c_obj.load_vault(f_obj.read(), factory.decryptor)
     return c_obj
 
@@ -46,6 +46,7 @@ def _store_in_vault(c_obj: collection.Collection):
     if not os.path.exists(vault_args.vault_file):
         factory.create_vault()
     content = c_obj.get_collection(factory.encryptor)
+    factory.update_cfg_file()
     util.safe_write(os.getcwd(), vault_args.vault_file , content)
     
 def _add_record_to_vault():    
@@ -109,7 +110,7 @@ def _search_vault():
 
 if __name__ == "__main__":
     if vault_args.cfg_file is not None:
-        cfg.load()
+        cfg.load(vault_args.cfg_path)
     factory.load_cmd_cfg(vault_args)
     factory.load_param_cfg(cfg)
     try:

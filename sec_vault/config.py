@@ -28,11 +28,13 @@ class CipherConfig:
         try:
             with open(cfg_path, 'r') as cfg_file:
                 cfg = yaml.load(cfg_file, Loader=yaml.FullLoader)
-                for key in cfg:
-                    if re.match("^.+_bytes$", key) is not None:
-                        self._cfg[key[:-6]] = cfg[key].encode('utf-8')
-                    else:
-                        self._cfg[key] = cfg[key]
+                for param in cfg:
+                    self._cfg[param] = {}
+                    for key in cfg[param]:
+                        if re.match("^.+_bytes$", key) is not None:
+                            self._cfg[param][key[:-6]] = cfg[param][key].encode('utf-8')
+                        else:
+                            self._cfg[param][key] = cfg[param][key]
         except:
             raise Exception("Invalid config file format")
     
@@ -56,10 +58,11 @@ class CipherConfig:
     def store(self, cfg_filename, cfg_dirname, **config):
         """Template method for dumping config into yaml file
         """
+        _name_prefix, _name_suffix = cfg_filename.split(".")
         self._update_cfg(config)
         cfg_fd, cfg_path = tempfile.mkstemp(
-             prefix = cfg_filename + "_", dir = cfg_dirname, 
-             text = True
+             prefix = _name_prefix + "_", suffix= _name_suffix,
+             dir = cfg_dirname, text = True
              )
         try:
             with os.fdopen(cfg_fd, 'w') as cfg_file:
