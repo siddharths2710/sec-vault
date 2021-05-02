@@ -16,7 +16,7 @@ def is_valid_suite(suite_name):
 def valid_encr_attr(attr):
     return attr[:12] == '_Encryptor__'
 
-def safe_write(directory, name, content):
+def safe_write(directory, name, content, overwrite=False):
         _name_prefix, _name_suffix = name.split(".")
         fd,  tmp_path = tempfile.mkstemp(
                         prefix = "{}_".format(_name_prefix),
@@ -26,7 +26,7 @@ def safe_write(directory, name, content):
         with os.fdopen(fd, "wb") as tmp_file:
             tmp_file.write(content)
         _final_path = os.path.join(directory, name)
-        if not os.path.exists(_final_path):
+        if overwrite or not os.path.exists(_final_path):
             os.rename(tmp_path, _final_path)
         else:
             _final_path = tmp_path

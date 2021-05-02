@@ -5,3 +5,10 @@ class View:
     
     def print(self, *args, **kwargs):
         print(*args, sep=" ", end="\r\n", **kwargs)
+    
+    def tabulate(self, *args):
+        if len(args) < 2:
+            print(args)
+        mid_len = len(args) - 2
+        fmt="{left}{mid}{right}".format(left="{:<8}\t", mid=" {} "* mid_len, right="\t{:>10}")
+        print(fmt.format(*args))

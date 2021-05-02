@@ -47,7 +47,9 @@ def _store_in_vault(c_obj: collection.Collection):
         factory.create_vault()
     content = c_obj.get_collection(factory.encryptor)
     factory.update_cfg_file()
-    util.safe_write(os.getcwd(), vault_args.vault_file , content)
+    vault_path = util.safe_write(os.getcwd(), vault_args.vault_file , content, vault_args.overwrite_vault)
+    view.print("vault file residing in {}".format(vault_path))
+    view.print()
     
 def _add_record_to_vault():    
     content_wrapper = _populate_from_vault()
@@ -111,6 +113,7 @@ def _search_vault():
 if __name__ == "__main__":
     if vault_args.cfg_file is not None:
         cfg.load(vault_args.cfg_path)
+    cfg.overwrite = vault_args.overwrite_cfg
     factory.load_cmd_cfg(vault_args)
     factory.load_param_cfg(cfg)
     try:

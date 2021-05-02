@@ -9,6 +9,9 @@ class Record:
         self._model = model.Model(model_type)
         self._content = {}
     
+    def __call__(self):
+        return self._content
+
     def load(self, content):
         """Populates record content from existing data"""
         if self._model.validate_record(content):

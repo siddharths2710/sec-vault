@@ -16,6 +16,7 @@ class CipherConfig:
         :type str
         """
         self._cfg = {}
+        self._overwrite_cfg = False
 
     def load(self, cfg_path):
         """Template method for loading yaml file
@@ -58,15 +59,32 @@ class CipherConfig:
     def store(self, cfg_filename, cfg_dirname, **config):
         """Template method for dumping config into yaml file
         """
-        _name_prefix, _name_suffix = cfg_filename.split(".")
+        _name_prefix, _name_suffix = cfg_filename.rsplit(".")
         self._update_cfg(config)
         cfg_fd, cfg_path = tempfile.mkstemp(
-             prefix = _name_prefix + "_", suffix= _name_suffix,
+             prefix = _name_prefix + "_", suffix= "." + _name_suffix,
              dir = cfg_dirname, text = True
              )
         try:
             with os.fdopen(cfg_fd, 'w') as cfg_file:
                 yaml.dump(self._cfg, cfg_file)
+            
+            if self.overwrite:
+                orig_cfg_path = os.path.join(cfg_dirname, cfg_filename)
+                os.rename(cfg_path, orig_cfg_path)
+                cfg_path = orig_cfg_path
+
             return cfg_path
         except:
             raise Exception("Invalid config file format")
+    
+    @property
+    def overwrite(self):
+        return self._overwrite_cfg
+    
+    @overwrite.setter
+    def overwrite(self, val):
+        if isinstance(val, bool):
+            self._overwrite_cfg = val
+        else:
+            raise Exception("Invalid cfg overwrite option")
