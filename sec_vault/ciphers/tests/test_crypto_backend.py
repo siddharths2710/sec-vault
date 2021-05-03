@@ -5,7 +5,7 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.ciphers import (
 Cipher, algorithms, modes
 )
-import sec_vault.ciphers.crypto_backend as crypto_backend
+import ciphers.crypto_backend as crypto_backend
     
 
 @pytest.fixture

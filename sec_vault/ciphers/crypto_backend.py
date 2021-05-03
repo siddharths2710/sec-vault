@@ -1,3 +1,4 @@
+# https://cryptography.io/en/latest/hazmat/primitives/symmetric-encryption
 import math
 import base64
 import logging

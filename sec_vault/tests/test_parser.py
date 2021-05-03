@@ -35,7 +35,7 @@ def test_cli_parser(*all_fixtures):
     for args in all_fixtures:
         ret = os.fork()
         if ret == 0:
-            parser = sec_vault.parser.CLIParser()
+            parser = parser.CLIParser()
             res = parser.parse_args(args)
         elif ret == -1:
             print("Child wasn't able to run")

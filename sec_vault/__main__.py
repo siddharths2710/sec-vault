@@ -11,12 +11,6 @@ import traceback
 import collection
 import cipherfactory
 
-vault_parser = parser.CLIParser()
-vault_args = vault_parser.parse_args()
-factory = cipherfactory.CipherFactory()
-cfg = config.CipherConfig()
-cfg_data = {}
-
 operation_callback = {
     "show_params": _show_params,
     "create_vault": factory.create_vault,
@@ -110,7 +104,12 @@ def _search_vault():
     rcrd = collection.get_record(int(rcrd_id))
     rcrd.display()
 
-if __name__ == "__main__":
+def main():
+    vault_parser = parser.CLIParser()
+    vault_args = vault_parser.parse_args()
+    factory = cipherfactory.CipherFactory()
+    cfg = config.CipherConfig()
+    cfg_data = {}
     if vault_args.cfg_file is not None:
         cfg.load(vault_args.cfg_path)
     cfg.overwrite = vault_args.overwrite_cfg
@@ -122,3 +121,6 @@ if __name__ == "__main__":
                 operation_callback[operation]()
     except Exception:
         traceback.print_exc()
+
+if __name__ == "__main__":
+    main()

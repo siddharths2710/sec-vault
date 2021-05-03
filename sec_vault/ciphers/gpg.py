@@ -1,3 +1,4 @@
+# https://pythonhosted.org/python-gnupg/#getting-started
 import gnupg
 import logging
 from . import cipher

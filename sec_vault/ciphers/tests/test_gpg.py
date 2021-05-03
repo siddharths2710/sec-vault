@@ -7,7 +7,7 @@ import pytest
 import gnupg
 import random
 import string
-import sec_vault.ciphers.gpg as gpg
+import ciphers.gpg as gpg
 
 gpg_obj = gnupg.GPG()
 

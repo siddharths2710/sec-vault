@@ -1,7 +1,7 @@
 
 import os
 import pytest
-import sec_vault.ciphers.crypto_openssl as crypto_openssl
+import ciphers.crypto_openssl as crypto_openssl
     
 def test_cipher():
     test_message = "test: crypto_openssl"

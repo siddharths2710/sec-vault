@@ -1,12 +1,15 @@
 {
     "name": "sec-vault",
-    "version": "1.0.0",
+    "version": "0.0.1",
     "description": "Password management CLI",
     "author": "Siddharth Srinivasan",
     "author_email": "siddharths2710@yahoo.com",
     "url": "https://github.com/siddharths2710/sec-vault",
-    "license": "MIT",
-    "packages": ["src"],
-    "package_data": {"package" : ["backend/*"] },
-    "scripts": ["runner"]
+    "license": "GPLv3",
+    "setup_requires": ["pytest-mock", "pytest-runner"],
+    "tests_require": ["pytest"],
+    "package_dir": {"" : "sec_vault" },
+    "entry_points": {
+    	"console_scripts": "sec-vault=__main__"
+    }
 }
