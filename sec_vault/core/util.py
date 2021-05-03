@@ -1,10 +1,9 @@
 import os
 import re
-import glob
 import string
 import pkgutil
-import ciphers
 import tempfile
+import ciphers
 
 def is_valid_suite(suite_name):
         try:
@@ -36,7 +35,12 @@ def join_path(parent_path, relative_path):
     return os.path.join(parent_path, relative_path)
 
 def get_abs_path(relative_path):
-    return join_path(os.getcwd(), relative_path)
+    return join_path(os.path.abspath(__file__), relative_path)
+
+def get_models_path():
+    return join_path(
+        os.path.dirname(os.path.abspath(__file__)), 
+        "models")
 
 def is_valid_file(abs_path):
     return os.path.exists(abs_path) and \
@@ -59,9 +63,8 @@ class CollectionMeta(type):
     
     @property
     def model_collection(self):
-        if not os.path.exists("models") or not os.path.isdir("models"):
-            raise Exception("Please maintain models directory")
-        return [ re.sub("models/|.json", "", mdl) for mdl in glob.glob("models/*")]
+        return [ re.sub("models/|.json", "", mdl) \
+                for mdl in os.listdir(get_models_path())]
 
 class Schema(type):
     """Metaclass for reserving the schema blueprint"""

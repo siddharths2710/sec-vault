@@ -1,6 +1,7 @@
 __pycache__/
 .pytest_cache/
 *.yaml*
+*.yml*
 *.vault
 
 .Python

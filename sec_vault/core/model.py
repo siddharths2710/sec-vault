@@ -1,20 +1,20 @@
 import os
 import json
 import glob
-import util
 import logging
 import traceback
+import core.util
 
-class Model(metaclass=util.Schema):
+class Model(metaclass=core.util.Schema):
     """Represents a data model for a credential record"""
     def __init__(self, model):
         """Initializes a model object for the given schema"""
         self._schema = {}
         self._types = {"int", "float", "str"}
-        self.schema_file = util.get_abs_path(
-                            util.join_path("models", 
-                            "{}.json".format(model)))
-        if not util.is_valid_dir(util.get_abs_path("models")):
+        self.schema_file = core.util.join_path(
+                            core.util.get_models_path(), 
+                            "{}.json".format(model))
+        if not core.util.is_valid_dir(core.util.get_models_path()):
             raise Exception("unable to access schema directory")
 
     def _validate_schema(self, schema):
@@ -31,7 +31,7 @@ class Model(metaclass=util.Schema):
 
     def load(self):
         """Loads model from schema file"""
-        if not util.is_valid_file(self.schema_file):
+        if not core.util.is_valid_file(self.schema_file):
             raise Exception("schema file {} invalid".format(self.schema_file))
         try:
             with open(self.schema_file, 'r') as file_obj:

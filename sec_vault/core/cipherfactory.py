@@ -1,11 +1,11 @@
 import re
 import os
 import stat
-import view
-import util
-import config
-import ciphers
 import argparse
+import ciphers
+import core.view
+import core.util
+import core.config
 
 class CipherFactory():
     """Factory wrapper for dispatching appropriate
@@ -18,7 +18,7 @@ class CipherFactory():
         self._cipher_obj = None
         self._cipher_configured = False
         self._parser_configured = False
-        self._cfg_obj = config.CipherConfig()
+        self._cfg_obj = core.config.CipherConfig()
 
     def create_vault(self):
         """Vault creation helper method"""
@@ -28,9 +28,9 @@ class CipherFactory():
         if os.path.exists(vault_path):
             raise Exception("vault file already exists: {}".format(vault_path))
         elif not os.path.isabs(vault_path):
-            util.safe_write(os.getcwd(), vault_path, self.encryptor.encrypt("[]"))
+            core.util.safe_write(os.getcwd(), vault_path, self.encryptor.encrypt("[]"))
         else:
-            util.safe_write("", vault_path, self.encryptor.encrypt("[]"))
+            core.util.safe_write("", vault_path, self.encryptor.encrypt("[]"))
         os.chmod(vault_path, 
             stat.S_IRUSR | stat.S_IWUSR | stat.S_ENFMT)
         self.update_cfg_file()
@@ -40,7 +40,7 @@ class CipherFactory():
         self._parser_cfg = vars(parse_obj)
         self._parser_configured = True
         
-    def load_param_cfg(self, config_obj: config.CipherConfig):
+    def load_param_cfg(self, config_obj: core.config.CipherConfig):
         """Maintains yaml config arguments"""
         if not self._parser_configured:
             raise Exception("Please provide CLI arguments into factory")
@@ -68,7 +68,7 @@ class CipherFactory():
                                 cfg_dirname = cfg_dirname,
                                 arg_params = arg_params,
                                 cipher_params = cipher_params)
-        view_obj = view.View()
+        view_obj = core.view.View()
         view_obj.print("updated cipher configuration flushed to: " + final_path)
 
     def _load_cipher_module(self):

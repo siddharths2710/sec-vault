@@ -12,8 +12,7 @@ if __name__ == "__main__":
     reqs_file = open('./sec_vault/requirements/base.txt',)
     config = json.load(cfg_file)
     config['long_description'] = readme_file.read()
-    #config['packages']=setuptools.find_packages(where="./sec_vault", exclude=("./sec_vault/tests","./sec_vault/ciphers/tests",))
-    #config['packages']=setuptools.find_packages(where=".")
+    config['include_package_data'] = True
     reqs = [req.strip() for req in reqs_file.readlines()]
     config["install_requires"] = reqs
     setuptools.setup(**config)

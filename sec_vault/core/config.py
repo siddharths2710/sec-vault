@@ -4,8 +4,6 @@ import yaml
 import logging
 import tempfile
 
-import ciphers
-
 class CipherConfig:
     """Wrapper for handling yaml-based parameter configs
     """

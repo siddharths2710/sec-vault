@@ -1,8 +1,8 @@
-import util
-import ciphers
 import argparse
+import ciphers
+import core.util
 
-class CLIParser(argparse.ArgumentParser, metaclass=util.CollectionMeta):
+class CLIParser(argparse.ArgumentParser, metaclass=core.util.CollectionMeta):
     def __init__(self, *args, **kwargs):
         super().__init__(prog='sec-vault', description='Password management CLI tool', fromfile_prefix_chars='@')
         self._populated_args = False

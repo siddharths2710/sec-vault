@@ -8,8 +8,9 @@
     "license": "GPLv3",
     "setup_requires": ["pytest-mock", "pytest-runner"],
     "tests_require": ["pytest"],
-    "package_dir": {"" : "sec_vault" },
+    "packages": ["core", "models", "ciphers"],
+    "package_dir": {"": "sec_vault"},
     "entry_points": {
-    	"console_scripts": "sec-vault=__main__"
+    	"console_scripts": "sec-vault=core.__main__:main"
     }
 }

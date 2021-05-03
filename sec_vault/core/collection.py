@@ -1,7 +1,7 @@
 import json
-import view
-import record
 import traceback
+import core.view
+import core.record
 import ciphers.cipher
 
 class Collection:
@@ -30,7 +30,7 @@ class Collection:
     def get_record(self, record_id: int):
         return self._data[self._calc_record_index(record_id)]
 
-    def add_record(self, rcrd: record.Record):
+    def add_record(self, rcrd: core.record.Record):
         """Helper for record insertion
         
         :param record: The record object to insert
@@ -106,7 +106,7 @@ class Collection:
     
     def display(self):
         """Helper for displaying a collection"""
-        view_obj = view.View()
+        view_obj = core.view.View()
         view_obj.print()
         view_obj.print("============VAULT CONTENTS==================")
         for record in self._data:

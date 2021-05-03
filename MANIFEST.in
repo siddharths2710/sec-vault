@@ -1,0 +1,3 @@
+include README.md
+include 
+recursive-include data *
