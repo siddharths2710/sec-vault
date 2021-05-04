@@ -30,11 +30,16 @@ class Record:
         if not self._model.validate_record(self._content):
             raise Exception("details entered for the given record are invalid")
     
-    def display(self):
+    def display(self, mode="table", indent = 1):
         """Displays contents of a record"""
         view_obj = core.view.View()
-        for field in self._content:
-            view_obj.print("\t {} : {}", field, self._content[field])
+        if mode == "json":
+            view_obj.print(json.dumps(self._content, indent = indent))
+        elif mode == "yaml":
+            view_obj.print(yaml.dump(self._content, indent = indent))
+        else:
+            for field in self._content:
+                view_obj.print("\t {} : {}", field, self._content[field])
     
     def modify_field(self, key, val):
         """Modifies content of the given field"""

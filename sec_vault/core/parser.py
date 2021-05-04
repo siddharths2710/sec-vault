@@ -30,6 +30,7 @@ class CLIParser(argparse.ArgumentParser, metaclass=core.util.CollectionMeta):
         self.add_argument("--modify-entry", action="store_true", help="Modify a record in the vault")
         self.add_argument("--modify-field", action="store_true", help="Modify a field of a record in the vault")
         self.add_argument("--display-vault", action="store_true", help="View entire vault contents")
+        self.add_argument("--display-format", action="store", default="table", help="Options: yaml, json or table format")
         self.add_argument("--search-vault", action="store_true", help="Query vault records for a search term")
         self.add_argument("--overwrite-cfg", dest="overwrite_cfg", action="store_true", help="Overwrite cfg file", required=False)
         self.add_argument("--overwrite-vault", dest="overwrite_vault", action="store_true", help="Overwrite vault file", required=False)

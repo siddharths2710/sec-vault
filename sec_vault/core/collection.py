@@ -1,4 +1,5 @@
 import json
+import yaml
 import traceback
 import core.view
 import core.record
@@ -106,13 +107,18 @@ class Collection:
             raise Exception("Inconsistencies in record ids for the given collection")
         self._cur_id = max(self._cur_id, max(record_ids))
     
-    def display(self):
+    def display(self, mode="table", indent=1):
         """Helper for displaying a collection"""
         view_obj = core.view.View()
         view_obj.print()
-        view_obj.print("============VAULT CONTENTS==================")
-        for record in self._data:
-            view_obj.print("#", record['record_id'])
-            for field in record['record']:
-                view_obj.tabulate(field, record['record'][field])
-            view_obj.print("--------------------------------------------")
+        if mode == "json":
+            view_obj.print(json.dumps(self._data, indent=indent))
+        elif mode == "yaml":
+            view_obj.print(yaml.dump(self._data, indent=indent))
+        else:
+            view_obj.print("============VAULT CONTENTS==================")
+            for record in self._data:
+                view_obj.print("#", record['record_id'])
+                for field in record['record']:
+                    view_obj.tabulate(field, record['record'][field])
+                view_obj.print("--------------------------------------------")

@@ -92,7 +92,7 @@ def _modify_record_field(vault_args, factory, **kwargs):
 
 def _display_vault(vault_args, factory, **kwargs):
     content_wrapper = _populate_from_vault(vault_args, factory, **kwargs)
-    content_wrapper.display()
+    content_wrapper.display(mode=vault_args.display_format)
 
 def _search_vault(vault_args, factory, **kwargs):
     view_obj = core.view.View()
