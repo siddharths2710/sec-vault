@@ -97,6 +97,8 @@ class Collection:
                 traceback.print_exc()
 
     def _update_index(self, collection: list):
+        if not bool(len(collection)):
+            return
         record_ids = set(map(lambda record: record['record_id'], collection))
         if bool(len(record_ids.intersection(set(range(1, self._cur_id + 1))))):
             raise Exception("Record id {} conflicts with another collection record".format(record_id))                   

@@ -21,9 +21,9 @@ class CLIParser(argparse.ArgumentParser, metaclass=core.util.CollectionMeta):
                         dest="cipher_suite", required=True, help="Specify the cipher backend, one of {}".format(
                                     ", ".join(CLIParser.cipher_suites)))
         self.add_argument('--record-type', action="store", type=str, \
-                        dest="record_type", required=True, 
-                        help="Specify the record type, one of {}".format(", ".join(CLIParser.model_collection))
-        self.add_argument("--show-cipher-params", required=False, dest="show_params",
+                        dest="record_type", required=True, \
+                        help="Specify the record type, one of {}".format(", ".join(CLIParser.model_collection)))
+        self.add_argument("--show-cipher-params", required=False, dest="show_params", \
                             action="store_true", help="Display supported config parameters for given cipher suite")
         self.add_argument("--add-entry", action="store_true", help="Add a new record for secure storage into the vault")
         self.add_argument("--del-entry", action="store_true", help="Delete a record in the vault")
@@ -34,4 +34,4 @@ class CLIParser(argparse.ArgumentParser, metaclass=core.util.CollectionMeta):
         self.add_argument("--overwrite-cfg", dest="overwrite_cfg", action="store_true", help="Overwrite cfg file", required=False)
         self.add_argument("--overwrite-vault", dest="overwrite_vault", action="store_true", help="Overwrite vault file", required=False)
         self.add_argument("--cipher-config-path", type=str, 
-                help="Path to YAML-based parameter file", dest="cfg_path", default="cfg.yaml", required=False)
+                help="Path to YAML-based parameter file", dest="cfg_path", required=False)

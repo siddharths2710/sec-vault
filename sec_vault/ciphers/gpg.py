@@ -43,11 +43,6 @@ class Encryptor(cipher.Encryptor):
         res = self.cipher.encrypt(plain_text, 
                     *self.__recipients, **self.encrypt_args
                     )
-        if not res.ok:
-            logging.error(
-                "gpg encryption error: ",
-                res.stderr
-            )
         return res.data.decode(self.__encoding)
 
 class Decryptor(cipher.Decryptor):
@@ -76,11 +71,6 @@ class Decryptor(cipher.Decryptor):
     def decrypt(self, cipher_text):
         try:
             res = self.cipher.decrypt(cipher_text, **self.decrypt_args)
-            if not res.ok:
-                logging.error(
-                    "gpg encryption error: ",
-                    res.stderr
-                )
             return res.data.decode(self.__encoding)
         except Exception as e:
             logging.error("gpg decryption failure", exc_info=True)

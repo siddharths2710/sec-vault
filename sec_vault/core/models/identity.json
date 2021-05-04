@@ -98,7 +98,6 @@
             "name": "handle",
             "type": "str",
             "required": false
-        },
-        
+        }
     ]
 }
