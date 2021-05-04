@@ -1,4 +1,4 @@
 argparse
 pyyaml
-gnupg~=2.3.1
+python-gnupg~=0.4.7
 cryptography~=3.4.7

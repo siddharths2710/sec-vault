@@ -55,5 +55,6 @@ def test_cipher(key_data, monkeypatch):
     monkeypatch.setattr(gpg_encryptor, "cipher", gpg_obj)
     monkeypatch.setattr(gpg_decryptor, "cipher", gpg_obj)
     cipher_text = gpg_encryptor.encrypt(test_message)
+    assert cipher_text != test_message
     plain_text = gpg_decryptor.decrypt(cipher_text)
     assert plain_text == test_message
