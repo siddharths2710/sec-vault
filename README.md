@@ -1,4 +1,6 @@
 # sec-vault
+![Tests](https://github.com/siddharths2710/sec-vault/actions/workflows/python-package.yml/badge.svg)
+
 ## Overview
 `sec-vault` is a SWISS army knife toolkit for in-house password management which provides interfaces for experts 
 who wish to have a more granular control on choosing external
