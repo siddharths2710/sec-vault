@@ -60,8 +60,9 @@ class CipherFactory():
         cipher_params = {k[1:]:v for k,v in cfg_attr.items() 
                         if bool(re.match("_+", k)) and 
                         not bool(re.match("_Encryptor__+", k))}
-        orig_cfg_path = self._parser_cfg['cfg_path']
-        cfg_filename = os.path.basename(orig_cfg_path)
+        orig_cfg_path = self._parser_cfg.get('cfg_path') or 'cfg.yaml'
+        cfg_filename = orig_cfg_path if not os.path.isabs(orig_cfg_path) \
+                        else os.path.basename(orig_cfg_path)
         cfg_dirname = os.path.dirname(orig_cfg_path) \
                     if os.path.isabs(orig_cfg_path) else os.getcwd()
         final_path = self._cfg_obj.store(cfg_filename = cfg_filename,

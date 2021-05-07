@@ -1,7 +1,7 @@
 
 import os
 import pytest
-import sec_vault.ciphers.crypto_fernet as crypto_fernet
+import ciphers.crypto_fernet as crypto_fernet
     
 def test_cipher():
     test_message = "test: crypto_fernet"

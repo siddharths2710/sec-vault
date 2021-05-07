@@ -3,16 +3,22 @@
 # This test simulates the scenario where the message is signed using
 # sender's gpg key and is decrypted by recipient's gpg key
 
+import os
 import pytest
 import gnupg
+import time
 import random
 import string
 import ciphers.gpg as gpg
 
-gpg_obj = gnupg.GPG()
+GPGBINARY = os.environ.get('GPGBINARY', 'gpg')
+keys_dir = "pytest_keys"
+if not os.path.isdir(keys_dir): os.mkdir(keys_dir)
+gpg_obj = gnupg.GPG(gpgbinary=GPGBINARY, gnupghome=keys_dir)
 
 @pytest.fixture
 def key_data():
+    global gpg_obj
     gen_email = lambda: "{}@test".format("".join(
         [random.choice(string.ascii_lowercase) for i in range(random.randint(6,10))]
         ))
@@ -46,7 +52,8 @@ def test_cipher(key_data, monkeypatch):
         arg_params = {
             "recipients": [result_pair['recipient'].fingerprint],
             "sign": result_pair['sender'].fingerprint,
-            'passphrase': credential_pair['sender']['passphrase']
+            'passphrase': credential_pair['sender']['passphrase'],
+            "symmetric": False
         })
     gpg_decryptor = gpg.Decryptor(
         arg_params= {

@@ -4,6 +4,7 @@ install:
 	pip3 install -r sec_vault/requirements/test.txt
 
 test:
+	export PYTHONDONTWRITEBYTECODE=1
 	pytest
 
 distclean:
