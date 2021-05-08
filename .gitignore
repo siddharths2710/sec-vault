@@ -3,6 +3,7 @@ __pycache__/
 pytest_keys/
 *.vault
 *.py.swp
+*.log
 
 .Python
 env/
