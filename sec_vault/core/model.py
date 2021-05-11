@@ -7,14 +7,14 @@ import core.util
 
 class Model(metaclass=core.util.Schema):
     """Represents a data model for a credential record"""
-    def __init__(self, model):
+    def __init__(self, model, is_path=False):
         """Initializes a model object for the given schema"""
         self._schema = {}
         self._types = {"int", "float", "str"}
         self.schema_file = core.util.join_path(
-                            core.util.get_models_path(), 
-                            "{}.json".format(model))
-        if not core.util.is_valid_dir(core.util.get_models_path()):
+                    core.util.get_models_path(), "{}.json".format(model)) \
+                    if not is_path else model
+        if not ( is_path or core.util.is_valid_dir(core.util.get_models_path())):
             raise Exception("unable to access schema directory")
 
     def _validate_schema(self, schema):
@@ -41,6 +41,11 @@ class Model(metaclass=core.util.Schema):
                             self.schema_file)
         except Exception:
             traceback.print_exc()
+    def store(self):
+        model_name = os.path.splitext(os.path.basename(self.schema_file))[0]
+        final_path = core.util.join_path(core.util.get_models_path(), 
+                                        "{}.json".format(model_name))
+        core.util.copy(self.schema_file, final_path)
     
     def get_fields(self):
         if not bool(self._schema):

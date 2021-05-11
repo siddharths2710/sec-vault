@@ -1,6 +1,7 @@
 import os
 import re
 import string
+import shutil
 import pkgutil
 import tempfile
 import ciphers
@@ -14,6 +15,12 @@ def is_valid_suite(suite_name):
 
 def valid_encr_attr(attr):
     return attr[:12] == '_Encryptor__'
+
+def copy(src: str, dst: str):
+    if os.path.isfile(src):
+        shutil.copyfile(src, dst)
+    else:
+        shutil.copy(src, dst)
 
 def safe_write(directory, name, content, overwrite=False):
         _name_prefix, _name_suffix = name.split(".")

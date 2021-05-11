@@ -23,6 +23,9 @@ class CLIParser(argparse.ArgumentParser, metaclass=core.util.CollectionMeta):
         self.add_argument('--record-type', action="store", type=str, \
                         dest="record_type", required=True, \
                         help="Specify the record type, one of {}".format(", ".join(CLIParser.model_collection)))
+        self.add_argument('--add-record-file', action="store", type=str, \
+                            dest="record_path", required=False, \
+                            help="Provide a new schema file path in json format")
         self.add_argument("--show-cipher-params", required=False, dest="show_params", \
                             action="store_true", help="Display supported config parameters for given cipher suite")
         self.add_argument("--add-entry", action="store_true", help="Add a new record for secure storage into the vault")

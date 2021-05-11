@@ -7,6 +7,7 @@ import traceback
 import ciphers
 import core.util
 import core.view
+import core.model
 import core.parser
 import core.config
 import core.record
@@ -113,6 +114,13 @@ def _prepare_config(vault_args, cipher_config):
         logging.error("Please provide a cipher config file")
         sys.exit(1)
 
+def _add_record_file(vault_args):
+    new_model = core.model.Model(vault_args.record_path, 
+                                is_path=True)
+    new_model.load()
+    new_model.store()
+
+
 operation_callback = {
     "show_params": _show_params,
     "create_vault": _create_vault,
@@ -121,7 +129,8 @@ operation_callback = {
     "modify_entry": _modify_vault_entry,
     "modify_field": _modify_record_field,
     "display_vault": _display_vault,
-    "search_vault": _search_vault
+    "search_vault": _search_vault,
+    "record_path": _add_record_file
 }
 
 def main():
