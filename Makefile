@@ -18,7 +18,7 @@ pypi-test: install
 	python3 setup.py install
 
 install:
-	pip3 install -r sec_vault/requirements/test.txt
+	pip3 install -r sec_vault/requirements.txt
 	apt install snapcraft
 
 test:
