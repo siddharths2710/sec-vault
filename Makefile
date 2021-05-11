@@ -1,8 +1,8 @@
 .PHONY: install clean distclean pypi-publish snap-publish pypi-test install
 
 pypi-publish: install
-	pip3 install twine setuptools wheel
-	python3 setup.py sdist bdist_wheel
+	python -m pip install twine setuptools wheel
+	python setup.py sdist bdist_wheel
 	twine upload dist/*
 
 snap-publish: install
@@ -13,22 +13,27 @@ snap-publish: install
 	snapcraft upload --release=edge $(SNAP)
 
 pypi-test: install
-	python3 setup.py develop
-	python3 setup.py build
-	python3 setup.py install
+	python setup.py develop
+	python setup.py build
+	python setup.py install
 
 install:
-	pip3 install -r sec_vault/requirements.txt
+	python -m pip install --upgrade pip
+	python -m pip install -r sec_vault/requirements.txt
 	apt install snapcraft
 
 test:
 	export PYTHONDONTWRITEBYTECODE=1 && pytest
 
+lint:
+	pylint
+
 distclean:
+	rm -rf *.snap
 	rm -rf dist/
 	rm -rf build/
-	rm -rf *.snap
-	rm sec_vault/sec_vault.egg-info
+	rm -rf sec_vault/sec_vault.egg-info/
+	rm -rf .eggs/
 
 clean:
 	python setup.py clean --all
