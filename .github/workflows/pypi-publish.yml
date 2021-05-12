@@ -19,12 +19,14 @@ jobs:
         python-version: '3.x'
     - name: Install dependencies
       run: |
-        sudo make install
-        pip install setuptools wheel twine
+           sudo make install
     - name: Build and publish
       env:
         TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
         TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
       run: |
-        python setup.py sdist bdist_wheel
-        twine upload dist/*
+         export TWINE_USERNAME=$TWINE_USERNAME
+         export TWINE_PASSWORD=$TWINE_PASSWORD
+         make publish-package
+         unset TWINE_USERNAME
+         unset TWINE_PASSWORD

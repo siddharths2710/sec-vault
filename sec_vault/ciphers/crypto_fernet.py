@@ -1,9 +1,4 @@
 # https://cryptography.io/en/latest/fernet
-import os
-import re
-import base64
-import typing
-
 from cryptography.fernet import Fernet
 import cryptography.hazmat.backends.interfaces
 import cryptography.hazmat.backends.openssl.backend
@@ -17,7 +12,7 @@ if 'Backend' in dir(cryptography.hazmat.backends.interfaces) else \
 
 class Encryptor(cipher.Encryptor):
     """Encryptor class for symmetric encryption through Fernet module.
-    Essential parameters such as generated keys and cipher modes 
+    Essential parameters such as generated keys and cipher modes
     are dunder-prefixed for reuse while decrypting the message.
     """
     def __init__(self, **kwargs):
@@ -42,7 +37,7 @@ class Encryptor(cipher.Encryptor):
 
     def encrypt(self, plain_text: str):
         """Template method for encryption of a single message
-        
+
         :param plain_text: input message for encryption
         :type str
         :returns: encrypted output for secure storage
@@ -52,7 +47,7 @@ class Encryptor(cipher.Encryptor):
 
 class Decryptor(cipher.Decryptor):
     """Decryptor class for symmetric decryption through Fernet module.
-    Essential parameters such as generated keys and cipher modes 
+    Essential parameters such as generated keys and cipher modes
     are dunder-prefixed for reuse while decrypting the message.
     """
     def __init__(self, **kwargs):
@@ -79,7 +74,7 @@ class Decryptor(cipher.Decryptor):
 
     def decrypt(self, cipher_text):
         """Template method for decryption of a cipher text
-        
+
         :param cipher_text: input message for decryption
         :type str
         :returns: decryption output access/modification

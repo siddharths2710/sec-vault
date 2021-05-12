@@ -1,0 +1,38 @@
+# This workflow will upload a Python Package using Twine when a release is created
+
+name: Upload Snap
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+    - name: Install dependencies
+      run: |
+        sudo make install
+    - name: Login to Snapcraft
+      env:
+         SNAP_MACAROON: ${{ secrets.SNAP_MACAROON }}
+         SNAP_UNBOUND_DISCHARGE: ${{ secrets.SNAP_UNBOUND_DISCHARGE }}
+         SNAP_EMAIL: ${{ secrets.SNAP_EMAIL }}
+      run: |
+         cat << "EOF" >> .snap.cfg
+         [login.ubuntu.com]
+         macaroon=$SNAP_MACAROON
+         unbound_discharge=$SNAP_UNBOUND_DISCHARGE
+         email=$SNAP_EMAIL
+         EOF
+         snapcraft login --with .snap.cfg
+    - name: Build and publish
+      run: |
+        make publish-snap

@@ -1,11 +1,7 @@
 import json
 import setuptools
-#try:
-#    from setuptools import setup
-#except ImportError:
-#    from distutils.core import setup
 
-
+"""sec-vault packaging for distribution"""
 if __name__ == "__main__":
     readme_file = open("README.md", "r", encoding="utf-8")
     cfg_file = open('config.json',)

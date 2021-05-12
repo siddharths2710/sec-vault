@@ -146,11 +146,11 @@ def main():
         for operation in operation_callback:
             if factory.is_requested(operation):
                 operation_callback[operation](vault_args=vault_args, factory=factory, cfg=cfg)
-    except Exception as e:
+    except Exception as exception_obj:
         if stage == "debug":
             traceback.print_exc()
         else:
-            logging.error(e)
+            logging.error(exception_obj)
 
 if __name__ == "__main__":
     main()

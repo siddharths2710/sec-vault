@@ -2,16 +2,19 @@ import argparse
 import ciphers
 import core.util
 
+"""Command-Line based Wrapper for Sec-vault"""
+
 class CLIParser(argparse.ArgumentParser, metaclass=core.util.CollectionMeta):
+    """Exposes options passed as arguments to sec-vault"""
     def __init__(self, *args, **kwargs):
         super().__init__(prog='sec-vault', description='Password management CLI tool', fromfile_prefix_chars='@')
         self._populated_args = False
 
-    def parse_args(self,*args):
+    def parse_args(self,args=None,namespace=None):
         if not self._populated_args:
             self._load_args()
             self._populated_args = True
-        return super().parse_args(*args)
+        return super().parse_args(args,namespace)
 
     def _load_args(self):
         self.add_argument("--create-vault", action="store_true", help="Create Vault file", dest="create_vault", required=False)
