@@ -1,0 +1,24 @@
+@startuml
+' sec-vault usage wiki: https://github.com/siddharths2710/sec-vault/wiki/Design-Document
+
+actor User #FFa12E
+participant CLI #lightBlue
+
+User -> CLI: Create Vault
+CLI --> User: OK {, NOK}
+note left #FFa12E:**--cipher**: ""GPG"" \n**--cfg**: ""params.yaml""
+note right #lightBlue: **--vault**:\n${PWD}~/sec.vault
+
+User -> CLI: Add record to vault
+CLI --> User: OK {, NOK}
+note left #FFa12E:**--type**: ""login""\n**--cipher**: ""GPG""\n**--cfg**: ""params.yaml""
+
+User -> CLI: Modify vault record
+CLI --> User: OK {, NOK}
+note left #FFa12E:**--id**: val\n**--type**: ""login""\n**--cipher**: ""GPG""\n**--cfg**: ""params.yaml""
+
+User -> CLI: Display vault
+CLI --> User: Contents
+note left #FFa12E:**--format**: ""json""\n**--cipher**: ""GPG""\n**--cfg**: ""params.yaml""
+note right #lightBlue: {\n  **svc**: name,\n  **cred**: secret\n}
+@enduml

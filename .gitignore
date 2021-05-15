@@ -22,3 +22,5 @@ var/
 .installed.cfg
 *.egg
 *.snap
+docs/build
+docs/source
