@@ -1,0 +1,32 @@
+@startuml
+skinparam BackgroundColor transparent
+
+component Component {
+    
+    node "Configurator" {
+      [ParamCfg] ..> [OptParser]
+    }
+    
+    package "Cipher" {
+      Encryptor - [Template]
+      [Template] - Decryptor
+      [Backend] ..> Encryptor
+      [Backend] ..> Decryptor
+    }
+    
+    package "Model" {
+      Record - [Driver]
+      [Driver] ..> Schema
+      [Collection] ..> Record
+    }
+    
+    
+    Model -[hidden]> Cipher
+    component [Factory] #yellow
+    [Collection] -> Backend
+    [Backend] -> ParamCfg
+    [Factory] -[norank]> [View]
+    [Factory] -[norank]> [Collection]
+}
+
+@enduml
