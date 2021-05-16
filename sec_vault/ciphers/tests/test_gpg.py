@@ -4,6 +4,8 @@
 # sender's gpg key and is decrypted by recipient's gpg key
 
 import os
+import re
+import flaky
 import pytest
 import gnupg
 import time
@@ -16,6 +18,7 @@ keys_dir = "pytest_keys"
 if not os.path.isdir(keys_dir): os.mkdir(keys_dir)
 gpg_obj = gnupg.GPG(gpgbinary=GPGBINARY, gnupghome=keys_dir)
 
+@flaky.flaky
 @pytest.fixture
 def key_data():
     global gpg_obj
@@ -44,6 +47,13 @@ def key_data():
         "result_pair": result_pair
     }
 
+def check_sporadic_exc(err, name, test, plugin):
+    exc = err[1]
+    sporadic_msg = "No recipients specified with asymmetric encryption"
+    return isinstance(exc, ValueError) and \
+        re.search(sporadic_msg, str(exc)) is not None
+
+@flaky.flaky(rerun_filter=check_sporadic_exc)
 def test_cipher(key_data, monkeypatch):
     test_message = "sec-vault: test_gpg"
     credential_pair = key_data['credential_pair']

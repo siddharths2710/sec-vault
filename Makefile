@@ -38,4 +38,4 @@ distclean:
 
 clean:
 	python setup.py clean --all
-	find . -name "*.pyc" -exec rm -rf {} \;
+	find . -name "*.pyc" -o -name ".pytest_cache" -exec rm -rf {} \;

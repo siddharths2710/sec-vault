@@ -1,4 +1,5 @@
 pyyaml
+flaky
 pylint
 pytest
 pytest-cov
