@@ -15,5 +15,8 @@ who wish to have a more granular control on choosing external
 > 
 
 <a href="https://snapcraft.io/siddharths2710" title="Get it from the Snap Store">
-            <img src="https://snapcraft.io/static/images/badges/en/snap-store-white.svg" alt="Get it from the Snap Store" width="200" />
-          </a>
+            <img src="https://snapcraft.io/static/images/badges/en/snap-store-white.svg" alt="Get it from the Snap Store" width="300" />
+</a>
+<a href="https://pypi.org/project/sec-vault" title="Get it from PyPI index">
+            <img src="https://miro.medium.com/max/100/1*ciPCmwyO6C79SLVU5Rj50w.jpeg" alt="Get it from PyPI index" width="95" />
+</a>
