@@ -18,7 +18,6 @@ keys_dir = "pytest_keys"
 if not os.path.isdir(keys_dir): os.mkdir(keys_dir)
 gpg_obj = gnupg.GPG(gpgbinary=GPGBINARY, gnupghome=keys_dir)
 
-@flaky.flaky
 @pytest.fixture
 def key_data():
     global gpg_obj
@@ -49,11 +48,16 @@ def key_data():
 
 def check_sporadic_exc(err, name, test, plugin):
     exc = err[1]
-    sporadic_msg = "No recipients specified with asymmetric encryption"
-    return isinstance(exc, ValueError) and \
-        re.search(sporadic_msg, str(exc)) is not None
+    sporadic_msg = {
+                        ValueError: "No recipients specified", 
+                        AssertionError: "sec-vault: test_gpg"
+                   }
+    for err in sporadic_msg:
+        if isinstance(exc, err) and re.search(sporadic_msg[err], str(exc)) is not None:
+            return True
+    return False
 
-@flaky.flaky(rerun_filter=check_sporadic_exc)
+@flaky.flaky(max_runs=5, rerun_filter=check_sporadic_exc)
 def test_cipher(key_data, monkeypatch):
     test_message = "sec-vault: test_gpg"
     credential_pair = key_data['credential_pair']
