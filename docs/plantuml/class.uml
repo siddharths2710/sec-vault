@@ -1,0 +1,58 @@
+@startuml
+
+namespace ciphers {
+        interface Cipher {
+            #cipher_params: Map<field, val>
+            #arg_params: Map<arg, val>
+        }
+        class Encryptor {
+            encrypt(plain_text: str): str
+        }
+        class Decryptor {
+            decrypt(cipher_test: str): str
+        }
+        class CipherImpl <<(M, orchid)>> {
+            +enc: Encryptor
+            +dec: Decryptor
+        }
+        Cipher <|-- CipherImpl
+        Encryptor -* CipherImpl
+        CipherImpl *- Decryptor
+
+}
+
+namespace core {
+        class CipherFactory << (S,#FF7700) Singleton >> {
+            #parser_cfg: ArgParse
+            #cipher_cfg: CipherConfig
+            getCipherImpl(): ciphers.CipherImpl
+            EncFactory(): ciphers.Encryptor
+            DecFactory(): ciphers.Decryptor
+        }
+        class CipherConfig << (S,#FF7700) Singleton >> {
+            #cfg_cache: Map
+            load_cfg(yaml: Map)
+            store_cfg(cfg_path: str)
+        }
+        class CLIParser << (S,#FF7700) Singleton >> {
+            #arg_cfg: Map
+            add_arg(cfg: Map)
+            parse_args(params: List)
+        }
+        CipherFactory *-- CipherConfig
+        CipherFactory *- CLIParser 
+}
+
+namespace model {
+        class Record {
+            #type: str
+            #data: Map<field, val>
+        }
+        class Collection {
+            #data: []Record
+        }
+        Record -o Collection
+}
+
+core.CipherFactory -[dashed]-> ciphers.CipherImpl
+@enduml
