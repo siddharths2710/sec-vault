@@ -5,7 +5,7 @@
     "author": "Siddharth Srinivasan",
     "author_email": "siddharths2710@yahoo.com",
     "url": "https://github.com/siddharths2710/sec-vault",
-    "license": "GPLv3",
+    "license": "LGPL-2.1 License",
     "setup_requires": ["pytest-mock", "pytest-runner"],
     "tests_require": ["pytest"],
     "packages": ["core", "ciphers"],
