@@ -14,7 +14,7 @@ class Encryptor(cipher.Encryptor):
     Essential parameters such as generated keys and cipher modes 
     are dunder-prefixed for reuse while decrypting the message.
     """
-    def __init__(self, cipher_params={}, arg_params={}, **kwargs):
+    def __init__(self, cipher_params: dict, arg_params: dict, **kwargs):
         """Initializer for primitives and underlying cipher objects
 
         :param kwargs: Consolidation of parameters consumed by base cipher library
@@ -62,7 +62,7 @@ class Decryptor(cipher.Decryptor):
     Essential parameters such as generated keys and cipher modes 
     are dunder-prefixed for reuse while decrypting the message.
     """
-    def __init__(self, cipher_params={}, arg_params={}, **kwargs):
+    def __init__(self, cipher_params: dict, arg_params: dict, **kwargs):
         """Initializer for primitives and underlying cipher objects
 
         :param kwargs: Consolidation of parameters consumed by base cipher library

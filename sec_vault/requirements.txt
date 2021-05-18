@@ -1,5 +1,6 @@
-pyyaml
 flaky
+pyyaml
+pynacl
 pylint
 pytest
 pytest-cov

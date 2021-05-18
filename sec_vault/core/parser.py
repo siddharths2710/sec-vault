@@ -6,6 +6,7 @@ import core.util
 
 class CLIParser(argparse.ArgumentParser, metaclass=core.util.CollectionMeta):
     """Exposes options passed as arguments to sec-vault"""
+
     def __init__(self, *args, **kwargs):
         super().__init__(prog='sec-vault', description='Password management CLI tool', fromfile_prefix_chars='@')
         self._populated_args = False
