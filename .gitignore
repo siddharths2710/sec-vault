@@ -22,5 +22,9 @@ var/
 .installed.cfg
 *.egg
 *.snap
+
 docs/build
 docs/source
+docs/sphinx/_build
+docs/sphinx/_static
+docs/sphinx/_templates
