@@ -14,6 +14,10 @@ who wish to have a more granular control on choosing external
 > the same. Unless you are technically adept, please avoid using this program at all costs.
 > 
 
+## Quickstart
+
+Please go through the [installation page](https://github.com/siddharths2710/sec-vault/wiki/Installation) and the [usage guide](https://github.com/siddharths2710/sec-vault/wiki/Usage-Guide) for guidance on interacting with the `sec-vault` command-line toolkit.
+
 <a href="https://snapcraft.io/siddharths2710" title="Get it from the Snap Store">
             <img src="https://snapcraft.io/static/images/badges/en/snap-store-white.svg" alt="Get it from the Snap Store" width="300" />
 </a>
