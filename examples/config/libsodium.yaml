@@ -1,0 +1,6 @@
+# https://pythonhosted.org/python-gnupg/#getting-started
+cipher_params:
+        private_key_bytes: i8U//i6^VZ~uyz/TC$>Cr9r29><ea=lX
+arg_params:
+        key_size: 32
+        encoding: utf-8

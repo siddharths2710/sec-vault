@@ -65,6 +65,7 @@ class CipherFactory():
                         else os.path.basename(orig_cfg_path)
         cfg_dirname = os.path.dirname(orig_cfg_path) \
                     if os.path.isabs(orig_cfg_path) else os.getcwd()
+        self._cfg_obj.overwrite = self._parser_cfg['overwrite_cfg']
         final_path = self._cfg_obj.store(cfg_filename = cfg_filename,
                                 cfg_dirname = cfg_dirname,
                                 arg_params = arg_params,
@@ -84,7 +85,8 @@ class CipherFactory():
         self._load_cipher_module()
         if self._enc is None:
             self._enc = self._cipher_obj.Encryptor(**self._cfg_obj())
-            #self.update_cfg_file()
+            if self._parser_cfg["overwrite_cfg"]:
+                self.update_cfg_file()
         return self._enc
     
     @property

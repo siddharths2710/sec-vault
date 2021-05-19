@@ -1,6 +1,6 @@
+from __future__ import absolute_import, division, print_function
 import sys
 import logging
-from __future__ import absolute_import, division, print_function
 
 __all__ = [
     "__title__",
