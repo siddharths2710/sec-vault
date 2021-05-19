@@ -84,7 +84,10 @@ class CipherFactory():
         """Returns an encryptor instance"""
         self._load_cipher_module()
         if self._enc is None:
-            self._enc = self._cipher_obj.Encryptor(**self._cfg_obj())
+            params = self._cfg_obj()
+            cipher_params = params.pop("cipher_params", {})
+            arg_params = params.pop("arg_params", {})
+            self._enc = self._cipher_obj.Encryptor(cipher_params, arg_params, **params)
             if self._parser_cfg["overwrite_cfg"]:
                 self.update_cfg_file()
         return self._enc
