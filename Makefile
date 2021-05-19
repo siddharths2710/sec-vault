@@ -20,7 +20,7 @@ make-snap: install
 
 install:
 	python -m pip install --upgrade pip
-	python -m pip install -r sec_vault/requirements.txt
+	python -m pip install -r sec_vault/requirements/test.txt
 	apt install snapcraft
 
 test:

@@ -1,0 +1,4 @@
+pyyaml
+argparse
+python-gnupg~=0.4.7
+cryptography~=3.4.7
