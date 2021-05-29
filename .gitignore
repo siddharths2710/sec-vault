@@ -6,6 +6,7 @@ pytest_keys/
 *.log
 
 .Python
+.coverage
 env/
 build/
 develop-eggs/
@@ -23,6 +24,7 @@ var/
 *.egg
 *.snap
 
+docs/cov
 docs/build
 docs/source
 docs/sphinx/_build

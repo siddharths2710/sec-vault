@@ -3,7 +3,7 @@
 [![PyPI version](https://badge.fury.io/py/sec-vault.svg)](https://badge.fury.io/py/sec-vault)
 [![Documentation Status](http://img.shields.io/badge/docs-latest-brightgreen.svg)](https://sec-vault.readthedocs.io)
 ## Overview
-`sec-vault` is a SWISS army knife toolkit for in-house password management which provides interfaces for experts 
+`sec-vault` is a SWISS army knife toolkit for in-house password management which providing CLI and Python-based abstractions for experts 
 who wish to have a more granular control on choosing external
 - cipher suites and primitives
 - cryptographic libraries 

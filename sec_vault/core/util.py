@@ -6,7 +6,13 @@ import pkgutil
 import tempfile
 import ciphers
 
-def is_valid_suite(suite_name):
+def is_valid_suite(suite_name: str):
+        """Cipher suite validity checker
+
+        :param  suite_name: Name of the cipher suite
+        :type   suite_name: str
+        :rtype: bool
+        """
         try:
             __import__("ciphers.{}".format(suite_name), fromlist=[ciphers])
             return True
@@ -14,6 +20,12 @@ def is_valid_suite(suite_name):
             return False
 
 def valid_encr_attr(attr):
+    """Filter for arg_param attributes for a cipher suite
+
+    :param  attr: Argument field to be validated for a given cipher
+    :type   attr: str
+    :rtype: bool
+    """
     return attr[:12] == '_Encryptor__'
 
 def copy(src: str, dst: str):
@@ -23,6 +35,17 @@ def copy(src: str, dst: str):
         shutil.copy(src, dst)
 
 def safe_write(directory, name, content, overwrite=False):
+        """Writes content in a temporary location and renames/overwrites the file accordingly
+
+        :param  directory: The dir hosting the final file
+        :type   directory: str
+        :param  name: propogated name of the regular file
+        :type   name: str
+        :param  content: Data to be written onto the file
+        :type   content: str
+        :param  overwrite: Overwrite file if existing
+        :type   overwrite: bool
+        """
         _name_prefix, _name_suffix = name.split(".")
         fd,  tmp_path = tempfile.mkstemp(
                         prefix = "{}_".format(_name_prefix),
@@ -39,9 +62,23 @@ def safe_write(directory, name, content, overwrite=False):
         return _final_path
 
 def join_path(parent_path, relative_path):
+    """Abstracts file path concatenation
+
+    :param  parent_path: The path housing the relative path
+    :type   parent_path: str
+    :param  relative_path: The current path referenced from the base location
+    :type   relative_path: str
+    :rtype: str
+    """
     return os.path.join(parent_path, relative_path)
 
 def get_abs_path(relative_path):
+    """Abstracts absolute path
+    
+    :param  relative_path: The current path relative to a reference
+    :type   relative_path: str
+    :rtype: str
+    """
     return join_path(os.path.abspath(__file__), relative_path)
 
 def get_models_path():

@@ -1,0 +1,44 @@
+[run]
+source = sec_vault
+branch = True
+
+[tool:pytest]
+addopts = --cov=sec_vault --cov-report html
+
+[report]
+# Regexes for lines to exclude from consideration
+exclude_lines =
+    # Have to re-enable the standard pragma
+    pragma: no cover
+
+    # Don't complain about missing debug-only code:
+    def __repr__
+    def __str__
+    if self\.debug
+
+    # Don't complain if tests don't hit defensive assertion code:
+    raise AssertionError
+    raise NotImplementedError
+
+    # Don't complain if non-runnable code isn't run:
+    if 0:
+    if __name__ == .__main__.:
+
+omit =
+	*/tests/*
+	*/__pycache__/*
+	sec_vault/core/__main__.py
+	sec_vault/core/__init__.py
+	sec_vault/ciphers/cipher.py
+
+ignore_errors = True
+
+[html]
+directory = docs/cov/html
+
+[xml]
+output = docs/cov/cov.xml
+
+
+[json]
+output = docs/cov/cov.json

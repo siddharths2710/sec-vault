@@ -12,8 +12,12 @@ class Record:
     def __call__(self):
         return self._content
 
-    def load(self, content):
-        """Populates record content from existing data"""
+    def load(self, content: dict):
+        """Populates record content from existing data
+        
+        :param  content: Indexed record contents
+        :type   content: dict
+        """
         if self._model.validate_record(content):
             self._content = content
         else:
@@ -31,7 +35,11 @@ class Record:
             raise Exception("details entered for the given record are invalid")
     
     def display(self, mode="table", indent = 1):
-        """Displays contents of a record"""
+        """Displays contents of a record
+        
+        :param  mode: The display format
+        :type   mode: str (json, yaml, table)
+        """
         view_obj = core.view.View()
         if mode == "json":
             view_obj.print(json.dumps(self._content, indent = indent))
@@ -41,8 +49,15 @@ class Record:
             for field in self._content:
                 view_obj.print("\t {} : {}", field, self._content[field])
     
-    def modify_field(self, key, val):
-        """Modifies content of the given field"""
+    def modify_field(self, key: str, val: str):
+        """Modifies content of the given field
+        
+        :param  key
+        :type   key: str
+
+        :param  val
+        :type   val: str
+        """
         if key not in self._content:
             raise Exception("field {} missing in record".format(key))
         self._content[key] = val
