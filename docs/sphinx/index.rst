@@ -10,8 +10,9 @@ Welcome to sec-vault's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   README <readme_link>
    modules
+
+.. mdinclude:: ../../README.md
 
 Indices and tables
 ==================
