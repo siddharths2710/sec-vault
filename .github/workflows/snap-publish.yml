@@ -19,7 +19,7 @@ jobs:
         python-version: '3.x'
     - name: Install dependencies
       run: |
-        sudo make install
+        sudo make prereqs
     - name: Login to Snapcraft
       env:
          SNAP_MACAROON: ${{ secrets.SNAP_MACAROON }}

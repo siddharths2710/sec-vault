@@ -1,24 +1,26 @@
-.PHONY: install clean distclean install publish-package publish-snap make-snap make-package test lint
+.PHONY: prereqs clean distclean publish-package publish-snap make-snap make-package test lint build install
 
-publish-package: make-package
+publish-package: install
 	python -m pip install twine setuptools wheel
 	python setup.py sdist bdist_wheel
 	twine upload dist/*
 
-publish-snap: make-snap
+publish-snap: snap
 	SNAP = $(shell ls sec-vault_*.snap | xargs)
 	snapcraft register sec-vault
 	snapcraft upload --release=edge $(SNAP)
 
-make-package: install
-	python setup.py develop
-	python setup.py build
+install: build
 	python setup.py install
 
-make-snap: install
+build: prereqs
+	python setup.py develop
+	python setup.py build
+
+snap: prereqs
 	snapcraft
 
-install:
+prereqs:
 	python -m pip install --upgrade pip
 	python -m pip install -r sec_vault/requirements/test.txt
 	apt install snapcraft

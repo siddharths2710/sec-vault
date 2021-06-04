@@ -19,7 +19,7 @@ jobs:
         python-version: '3.x'
     - name: Install dependencies
       run: |
-           sudo make install
+           sudo make prereqs
     - name: Build and publish
       env:
         TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
