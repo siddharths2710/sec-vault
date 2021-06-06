@@ -41,9 +41,9 @@ class Encryptor(cipher.Encryptor):
         :rtype str
         """
         res = self.cipher.encrypt(plain_text, 
-                    *self.__recipients, **self.encrypt_args
+                    self.__recipients, **self.encrypt_args
                     )
-        return res.data.decode(self.__encoding)
+        return res.data
 
 class Decryptor(cipher.Decryptor):
     """Decryptor class for symmetric decryption through Fernet module.

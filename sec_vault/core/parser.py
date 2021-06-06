@@ -25,7 +25,7 @@ class CLIParser(argparse.ArgumentParser, metaclass=core.util.CollectionMeta):
                         dest="cipher_suite", required=True, help="Specify the cipher backend, one of {}".format(
                                     ", ".join(CLIParser.cipher_suites)))
         self.add_argument('--record-type', action="store", type=str, \
-                        dest="record_type", required=True, \
+                        dest="record_type", required=False, \
                         help="Specify the record type, one of {}".format(", ".join(CLIParser.model_collection)))
         self.add_argument('--add-record-file', action="store", type=str, \
                             dest="record_path", required=False, \

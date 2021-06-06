@@ -49,7 +49,7 @@ def _add_record_to_vault(vault_args, factory, **kwargs):
     content_wrapper = _populate_from_vault(vault_args, factory, **kwargs)
     record_type = vault_args.record_type
     if record_type is None:
-        raise Exception("please provide a valid record type in CLI")
+        raise Exception("please provide a valid record type")
     rcrd = core.record.Record(record_type)
     rcrd.create_interactive()
     content_wrapper.add_record(rcrd)

@@ -46,10 +46,12 @@ def safe_write(directory, name, content, overwrite=False):
         :param  overwrite: Overwrite file if existing
         :type   overwrite: bool
         """
-        _name_prefix, _name_suffix = name.split(".")
+        _name_prefix, _name_suffix = os.path.splitext(name)
+        if not bool(_name_suffix):
+            _name_suffix = ".vault"
         fd,  tmp_path = tempfile.mkstemp(
                         prefix = "{}_".format(_name_prefix),
-                        suffix= ".{}".format(_name_suffix),
+                        suffix= _name_suffix,
                         dir = directory
                     )
         with os.fdopen(fd, "wb") as tmp_file:
