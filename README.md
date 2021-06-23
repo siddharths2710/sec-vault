@@ -22,7 +22,7 @@ Please go through the following docs for guidance on interacting with the `sec-v
 - [Technical Spec](https://github.com/siddharths2710/sec-vault/wiki/Design-Document)
 - [Code-related docs](https://sec-vault.readthedocs.io)
 - Further notes on the [GitHub Wiki](https://github.com/siddharths2710/sec-vault/wiki)
-<a href="https://snapcraft.io/siddharths2710" title="Get it from the Snap Store">
+<a href="https://snapcraft.io/sec-vault" title="Get it from the Snap Store">
             <img src="https://snapcraft.io/static/images/badges/en/snap-store-white.svg" alt="Get it from the Snap Store" width="300" />
 </a>
 <a href="https://pypi.org/project/sec-vault" title="Get it from PyPI index">
