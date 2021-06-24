@@ -1,6 +1,6 @@
 {
     "name": "sec-vault",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "description": "Password management CLI",
     "author": "Siddharth Srinivasan",
     "author_email": "siddharths2710@yahoo.com",
