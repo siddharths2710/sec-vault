@@ -14,12 +14,6 @@ Welcome to sec-vault's documentation!
 
 .. mdinclude:: ../../README.md
 
-.. image:: https://snapcraft.io/static/images/badges/en/snap-store-white.svg
-   :target: https://snapcraft.io/sec-vault
-
-.. image:: https://miro.medium.com/max/100/1*ciPCmwyO6C79SLVU5Rj50w.jpeg
-   :target: https://pypi.org/project/sec-vault
-
 Indices and tables
 ==================
 
