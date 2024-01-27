@@ -4,5 +4,5 @@ argparse
 sphinx
 sphinx-rtd-theme
 python-gnupg~=0.4.7
-cryptography~=3.4.7
+cryptography~=42.0.0
 mistune>=2.0.3 # not directly required, pinned by Snyk to avoid a vulnerability
