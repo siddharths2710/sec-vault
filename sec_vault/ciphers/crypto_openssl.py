@@ -4,7 +4,6 @@ import base64
 import typing
 
 from cryptography.fernet import Fernet
-import cryptography.hazmat.backends.interfaces
 import cryptography.hazmat.backends.openssl.backend
 
 from . import cipher, cipher_utils

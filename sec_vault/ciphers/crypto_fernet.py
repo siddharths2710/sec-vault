@@ -1,14 +1,11 @@
 # https://cryptography.io/en/latest/fernet
 from cryptography.fernet import Fernet
-import cryptography.hazmat.backends.interfaces
 import cryptography.hazmat.backends.openssl.backend
 
 from . import cipher, cipher_utils
 
 
-backend_package = cryptography.hazmat.backends.interfaces.Backend \
-if 'Backend' in dir(cryptography.hazmat.backends.interfaces) else \
-                cryptography.hazmat.backends.openssl.backend
+backend_package = cryptography.hazmat.backends.openssl.backend
 
 class Encryptor(cipher.Encryptor):
     """Encryptor class for symmetric encryption through Fernet module.

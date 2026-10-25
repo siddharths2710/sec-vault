@@ -32,8 +32,8 @@ class Encryptor(cipher.Encryptor):
             raise Exception("Unsupported algo type {}".format(self._algorithm))
         if self._mode not in CIPHER_ARGS['modes']:
             raise Exception("Unsupported mode type {}".format(self._mode))
-        algo_obj = vars(algorithms)[self._algorithm]
-        mode_obj = vars(modes)[self._mode]
+        algo_obj = getattr(algorithms, self._algorithm)
+        mode_obj = getattr(modes, self._mode)
         self._cipher = Cipher(
                 algo_obj(self.__key, **self.__algorithm),
                 mode_obj(self.__iv, **self.__mode),
@@ -82,8 +82,8 @@ class Decryptor(cipher.Decryptor):
             raise Exception("Unsupported algo type {}".format(self._algorithm))
         if self._mode not in CIPHER_ARGS['modes']:
             raise Exception("Unsupported mode type {}".format(self._mode))
-        algo_obj = eval("algorithms.{}".format(self._algorithm))
-        mode_obj = eval("modes.{}".format(self._mode))
+        algo_obj = getattr(algorithms, self._algorithm)
+        mode_obj = getattr(modes, self._mode)
         self._cipher = Cipher(
                 algo_obj(self.__key, **self.__algorithm),
                 mode_obj(self.__iv, **self.__mode),

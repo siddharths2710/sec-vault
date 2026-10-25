@@ -1,0 +1,6 @@
+# Post-quantum hybrid suite: ML-KEM-768 + X25519 key establishment,
+# AES-256-GCM for the vault payload and ML-DSA-65 for authenticity.
+# Omit the *_private_key entries to have fresh keys generated on vault
+# creation; with --overwrite-cfg they are flushed back into this file.
+arg_params:
+        encoding: utf-8
