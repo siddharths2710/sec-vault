@@ -8,6 +8,7 @@ pytest_keys/
 .Python
 .coverage
 env/
+.venv/
 build/
 develop-eggs/
 dist/

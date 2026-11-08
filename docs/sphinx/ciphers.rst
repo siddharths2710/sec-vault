@@ -68,6 +68,14 @@ ciphers.libsodium module
    :undoc-members:
    :show-inheritance:
 
+ciphers.pqcrypto module
+-----------------------
+
+.. automodule:: ciphers.pqcrypto
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 

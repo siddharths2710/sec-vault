@@ -58,7 +58,7 @@ def safe_write(directory, name, content, overwrite=False):
             tmp_file.write(content)
         _final_path = os.path.join(directory, name)
         if overwrite or not os.path.exists(_final_path):
-            os.rename(tmp_path, _final_path)
+            os.replace(tmp_path, _final_path)
         else:
             _final_path = tmp_path
         return _final_path

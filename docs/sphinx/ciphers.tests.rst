@@ -44,6 +44,14 @@ ciphers.tests.test\_libsodium module
    :undoc-members:
    :show-inheritance:
 
+ciphers.tests.test\_pqcrypto module
+-----------------------------------
+
+.. automodule:: ciphers.tests.test_pqcrypto
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 
