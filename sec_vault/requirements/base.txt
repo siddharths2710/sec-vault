@@ -2,3 +2,4 @@ pyyaml
 argparse
 python-gnupg~=0.4.7
 cryptography~=50.0
+setuptools>=65.5.1
