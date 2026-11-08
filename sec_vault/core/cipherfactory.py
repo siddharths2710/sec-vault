@@ -61,10 +61,7 @@ class CipherFactory():
                         if bool(re.match("_+", k)) and 
                         not bool(re.match("_Encryptor__+", k))}
         orig_cfg_path = self._parser_cfg.get('cfg_path') or 'cfg.yaml'
-        cfg_filename = orig_cfg_path if not os.path.isabs(orig_cfg_path) \
-                        else os.path.basename(orig_cfg_path)
-        cfg_dirname = os.path.dirname(orig_cfg_path) \
-                    if os.path.isabs(orig_cfg_path) else os.getcwd()
+        cfg_dirname, cfg_filename = os.path.split(os.path.abspath(orig_cfg_path))
         self._cfg_obj.overwrite = self._parser_cfg['overwrite_cfg']
         final_path = self._cfg_obj.store(cfg_filename = cfg_filename,
                                 cfg_dirname = cfg_dirname,

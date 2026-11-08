@@ -65,3 +65,38 @@ def test_pqcrypto_vault_roundtrip(tmp_path, monkeypatch, mocker):
     with open(read_args.vault_file, "rb") as vault_file:
         collection.load_vault(vault_file.read(), read_factory.decryptor)
     assert collection._data[0]["record"]["user_name"] == "test-value"
+
+def test_dotted_relative_cfg_path(tmp_path, monkeypatch, mocker):
+    """Config paths such as ./cfg.test.yaml must survive the config flush"""
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "cfg.test.yaml").write_text(
+        yaml.dump({"arg_params": {"encoding": "utf-8"}}))
+    vault_args = ["--vault-file", "pqtest.vault", "--cipher-suite", "pqcrypto",
+                  "--cipher-config-path", "./cfg.test.yaml",
+                  "--record-type", "login"]
+
+    create_args = core.parser.CLIParser().parse_args(
+        vault_args + ["--create-vault", "--overwrite-cfg"])
+    factory = core.cipherfactory.CipherFactory()
+    factory.load_cmd_cfg(parse_obj=create_args)
+    factory.load_param_cfg(_load_config(create_args.cfg_path))
+    factory.create_vault()
+
+    add_args = core.parser.CLIParser().parse_args(
+        vault_args + ["--add-entry", "--overwrite-cfg", "--overwrite-vault"])
+    add_factory = core.cipherfactory.CipherFactory()
+    add_factory.load_cmd_cfg(parse_obj=add_args)
+    add_factory.load_param_cfg(_load_config(add_args.cfg_path))
+    mocker.patch.object(core.view.View, "prompt_read", return_value="website")
+    sec_vault_main._add_record_to_vault(vault_args=add_args, factory=add_factory)
+
+    read_factory = core.cipherfactory.CipherFactory()
+    read_factory.load_cmd_cfg(
+        parse_obj=core.parser.CLIParser().parse_args(vault_args))
+    read_factory.load_param_cfg(_load_config("./cfg.test.yaml"))
+    collection = core.collection.Collection()
+    with open("pqtest.vault", "rb") as vault_file:
+        collection.load_vault(vault_file.read(), read_factory.decryptor)
+    assert collection._data[0]["record"]["service_name"] == "website"
+    assert (tmp_path / "cfg.test.yaml").exists()
+    assert not list(tmp_path.glob("cfg_*"))

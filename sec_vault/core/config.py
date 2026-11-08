@@ -57,10 +57,10 @@ class CipherConfig:
     def store(self, cfg_filename, cfg_dirname, **config):
         """Template method for dumping config into yaml file
         """
-        _name_prefix, _name_suffix = cfg_filename.rsplit(".")
+        _name_prefix, _name_suffix = os.path.splitext(cfg_filename)
         self._update_cfg(config)
         cfg_fd, cfg_path = tempfile.mkstemp(
-             prefix = _name_prefix + "_", suffix= "." + _name_suffix,
+             prefix = _name_prefix + "_", suffix= _name_suffix,
              dir = cfg_dirname, text = True
              )
         try:
@@ -69,7 +69,7 @@ class CipherConfig:
             
             if self.overwrite:
                 orig_cfg_path = os.path.join(cfg_dirname, cfg_filename)
-                os.rename(cfg_path, orig_cfg_path)
+                os.replace(cfg_path, orig_cfg_path)
                 cfg_path = orig_cfg_path
 
             return cfg_path
