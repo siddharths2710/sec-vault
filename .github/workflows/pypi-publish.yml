@@ -18,14 +18,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v5
       with:
         python-version: '3.x'
-    - name: Install dependencies
+    - name: Install Python dependencies
       run: |
-           make prereqs
+        python -m pip install --upgrade pip
+        pip install -r sec_vault/requirements/test.txt
+        pip install twine setuptools wheel
     - name: Build and publish
       env:
         TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
@@ -33,6 +35,7 @@ jobs:
       run: |
          export TWINE_USERNAME=$TWINE_USERNAME
          export TWINE_PASSWORD=$TWINE_PASSWORD
-         make publish-package
+         python setup.py sdist bdist_wheel
+         twine upload dist/*
          unset TWINE_USERNAME
          unset TWINE_PASSWORD
