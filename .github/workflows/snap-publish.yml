@@ -46,8 +46,14 @@ jobs:
         EOF
         # Persist credentials for subsequent steps
         echo "SNAPCRAFT_STORE_CREDENTIALS=$(cat snapcraft-credentials.json | jq -c .)" >> $GITHUB_ENV
-    - name: Build and publish
+    - name: Build snap
       run: |
-        snapcraft
+        # Use --destructive-mode to build without LXD (requires sudo)
+        sudo snapcraft pack --destructive-mode
+    - name: Publish snap
+      if: env.SNAP_MACAROON != '' && env.SNAP_UNBOUND_DISCHARGE != '' && env.SNAP_EMAIL != ''
+      run: |
         SNAP=$(ls sec-vault_*.snap | head -1)
         snapcraft upload --release=edge "$SNAP"
+      env:
+        SNAPCRAFT_STORE_CREDENTIALS: ${{ env.SNAPCRAFT_STORE_CREDENTIALS }}
