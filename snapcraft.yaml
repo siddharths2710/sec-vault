@@ -2,7 +2,7 @@ name: sec-vault
 version: git
 summary: sec-vault
 description: |
-  sec-vault is a SWISS army knife toolkit for in-house password management. sec-vault exposes a command-line interface which enables the end user to choose a particular cipher backend and maintain various credential types in a secret vault file. 
+  sec-vault is a SWISS army knife toolkit for in-house password management. sec-vault exposes a command-line interface which enables the end user to choose a particular cipher backend and maintain various credential types in a secret vault file.
 base: core22
 confinement: devmode
 
@@ -10,7 +10,7 @@ confinement: devmode
 parts:
   sec-vault:
     plugin: python
-    python-version: python3
+    python-version: "3.11"
     source: .
     stage-packages:
       - python-six
