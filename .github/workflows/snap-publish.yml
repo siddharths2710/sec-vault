@@ -30,19 +30,22 @@ jobs:
     - name: Install snapcraft
       run: |
         sudo snap install snapcraft --classic
-    - name: Login to Snapcraft
+    - name: Configure Snapcraft credentials
       env:
-         SNAP_MACAROON: ${{ secrets.SNAP_MACAROON }}
-         SNAP_UNBOUND_DISCHARGE: ${{ secrets.SNAP_UNBOUND_DISCHARGE }}
-         SNAP_EMAIL: ${{ secrets.SNAP_EMAIL }}
+        SNAP_MACAROON: ${{ secrets.SNAP_MACAROON }}
+        SNAP_UNBOUND_DISCHARGE: ${{ secrets.SNAP_UNBOUND_DISCHARGE }}
+        SNAP_EMAIL: ${{ secrets.SNAP_EMAIL }}
       run: |
-         cat << "EOF" >> .snap.cfg
-         [login.ubuntu.com]
-         macaroon=$SNAP_MACAROON
-         unbound_discharge=$SNAP_UNBOUND_DISCHARGE
-         email=$SNAP_EMAIL
-         EOF
-         snapcraft login --with .snap.cfg
+        # Create credentials JSON for new snapcraft authentication (SNAPCRAFT_STORE_CREDENTIALS)
+        cat << EOF > snapcraft-credentials.json
+        {
+          "macaroon": "$SNAP_MACAROON",
+          "discharge": "$SNAP_UNBOUND_DISCHARGE",
+          "email": "$SNAP_EMAIL"
+        }
+        EOF
+        # Persist credentials for subsequent steps
+        echo "SNAPCRAFT_STORE_CREDENTIALS=$(cat snapcraft-credentials.json | jq -c .)" >> $GITHUB_ENV
     - name: Build and publish
       run: |
         snapcraft
