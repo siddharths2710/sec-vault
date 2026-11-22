@@ -13,7 +13,6 @@ parts:
     source: .
     stage-packages:
       - python3
-      - python-six
     python-packages:
             - argparse
             - pyyaml
