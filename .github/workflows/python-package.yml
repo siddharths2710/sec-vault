@@ -8,6 +8,12 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
+  workflow_dispatch:
+    inputs:
+      python-version:
+        description: 'Python version to test (e.g., 3.9, 3.10, 3.11, 3.12). Defaults to matrix.'
+        required: false
+        type: string
 
 jobs:
   build:
