@@ -11,8 +11,6 @@ parts:
   sec-vault:
     plugin: python
     source: .
-    stage-packages:
-      - python3
     python-packages:
             - argparse
             - pyyaml
