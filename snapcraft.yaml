@@ -10,9 +10,10 @@ confinement: devmode
 parts:
   sec-vault:
     plugin: python
-    python-version: "3.11"
     source: .
     stage-packages:
+      - python3
+      - python3-venv
       - python-six
     python-packages:
             - argparse
